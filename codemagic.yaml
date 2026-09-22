@@ -1,0 +1,78 @@
+workflows:
+  android-release:
+    name: Katiba Jam — Android Release
+    max_build_duration: 60
+    instance_type: linux_x2
+    environment:
+      groups:
+        - android_signing      # KJ_KEYSTORE_BASE64, KJ_KEYSTORE_PASSWORD, KJ_KEY_ALIAS, KJ_KEY_PASSWORD
+        - google_play          # GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+      vars:
+        PACKAGE_NAME: "com.rkigano.katibajam"
+        KJ_KEYSTORE_PATH: "/tmp/keystore/release.keystore"
+      node: 22
+      java: 21
+    scripts:
+      - name: Install npm dependencies
+        script: npm ci
+      - name: Sync Capacitor Android project
+        script: npx cap sync android
+      - name: Decode Android keystore
+        script: |
+          mkdir -p /tmp/keystore
+          echo $KJ_KEYSTORE_BASE64 | base64 --decode > $KJ_KEYSTORE_PATH
+      - name: Build signed release AAB
+        script: |
+          cd android
+          chmod +x gradlew
+          ./gradlew bundleRelease
+    artifacts:
+      - android/app/build/outputs/**/*.aab
+      - android/app/build/outputs/**/*.apk
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: true
+        changes_not_sent_for_review: true
+
+  ios-release:
+    name: Katiba Jam — iOS Release
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: codemagic_asc   # must match the integration name you create in Codemagic > Team settings > Integrations > App Store Connect
+    environment:
+      groups:
+        - ios_signing         # CERTIFICATE_PRIVATE_KEY
+      vars:
+        BUNDLE_ID: "com.rkigano.katibajam"
+        XCODE_PROJECT: "ios/App/App.xcodeproj"
+        XCODE_SCHEME: "App"
+      node: 22
+      xcode: latest
+    scripts:
+      - name: Install npm dependencies
+        script: npm ci
+      - name: Sync Capacitor iOS project
+        script: npx cap sync ios
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+      - name: Use system default keychain
+        script: keychain initialize
+      - name: Add certificates to keychain
+        script: keychain add-certificates
+      - name: Set up automatic code signing
+        script: |
+          xcode-project use-profiles
+      - name: Build .ipa
+        script: |
+          xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true

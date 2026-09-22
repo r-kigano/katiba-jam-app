@@ -1,0 +1,20 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1024" height="1024" fill="#0E0E0E"/>
+  <rect y="246" width="1024" height="61" fill="#FFFFFF"/>
+  <rect y="307" width="1024" height="410" fill="#C8102E"/>
+  <rect y="717" width="1024" height="61" fill="#FFFFFF"/>
+  <rect y="778" width="1024" height="246" fill="#00753A"/>
+
+  <line x1="400" y1="700" x2="650" y2="150" stroke="#8A5A2B" stroke-width="15" stroke-linecap="round"/>
+  <polygon points="0,-64 7,-22 0,8 -7,-22" fill="#F2F2F2" stroke="#1A1A1A" stroke-width="5" transform="translate(650,150) rotate(24.8)"/>
+  <line x1="624" y1="700" x2="374" y2="150" stroke="#8A5A2B" stroke-width="15" stroke-linecap="round"/>
+  <polygon points="0,-64 7,-22 0,8 -7,-22" fill="#F2F2F2" stroke="#1A1A1A" stroke-width="5" transform="translate(374,150) rotate(-24.8)"/>
+
+  <g>
+    <path d="M512 250 C360 250 280 400 280 560 C280 640 340 690 512 740 C684 690 744 640 744 560 C744 400 664 250 512 250 Z"
+          fill="#FFFFFF" stroke="#1A1A1A" stroke-width="30"/>
+    <path d="M512 285 C400 285 335 410 335 555 C335 615 380 655 512 695 L512 285 Z" fill="#0E0E0E"/>
+    <path d="M512 285 C624 285 689 410 689 555 C689 615 644 655 512 695 L512 285 Z" fill="#C8102E"/>
+    <rect x="474" y="285" width="76" height="410" fill="#FFFFFF"/>
+  </g>
+</svg>

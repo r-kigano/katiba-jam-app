@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Katiba Jam</string>
+    <string name="title_activity_main">Katiba Jam</string>
+    <string name="package_name">com.rkigano.katibajam</string>
+    <string name="custom_url_scheme">com.rkigano.katibajam</string>
+</resources>

@@ -1,0 +1,16 @@
+{
+  "appId": "com.rkigano.katibajam",
+  "appName": "Katiba Jam",
+  "webDir": "www",
+  "backgroundColor": "#FBF6EA",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#FBF6EA"
+  },
+  "android": {
+    "backgroundColor": "#FBF6EA"
+  }
+}

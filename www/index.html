@@ -1,0 +1,1333 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Katiba Jam</title>
+<meta name="theme-color" content="#C8102E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Katiba Jam">
+<meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+  :root{
+    --cream:#FBF6EA;
+    --cream-2:#F1E7CE;
+    --paper-line: rgba(20,20,20,0.14);
+    --ink:#1A1A1A;
+    --ink-soft:#4E4E4E;
+    --red:#C8102E;
+    --red-dark:#900B20;
+    --green:#00753A;
+    --green-dark:#004E27;
+    --gold:#E3A72E;
+    --gold-dark:#AD7A16;
+    --charcoal:#2B2B2B;
+    --charcoal-dark:#0E0E0E;
+    --teal:#0E7C7B;
+    --teal-dark:#0A5958;
+    --plum:#7A3B5E;
+    --plum-dark:#57273F;
+    --radius: 22px;
+    --scale: 1;
+    --shadow-sm: 0 4px 0 rgba(20,20,20,0.16);
+    --shadow-md: 0 8px 0 rgba(20,20,20,0.16);
+    --focus: 3px solid #0A5958;
+  }
+  html.contrast{
+    --paper-line: rgba(10,10,10,0.55);
+    --ink:#0A0A0A;
+    --ink-soft:#0A0A0A;
+    --shadow-sm: 0 4px 0 rgba(10,10,10,0.4);
+    --shadow-md: 0 8px 0 rgba(10,10,10,0.4);
+  }
+  *{ box-sizing:border-box; }
+  html{ font-size: calc(16px * var(--scale)); scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+  body{
+    margin:0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family:"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3,.display{
+    font-family:"Baloo 2","Segoe UI",Arial,sans-serif;
+    font-weight:800;
+    color: var(--ink);
+    text-wrap: balance;
+    margin:0;
+  }
+  a{ color: var(--teal-dark); }
+  button{ font-family: inherit; cursor:pointer; }
+  button:focus-visible, [tabindex]:focus-visible, input:focus-visible, summary:focus-visible{
+    outline: var(--focus); outline-offset:3px;
+  }
+  button, [role="button"]{
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-user-select: none; user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .wrap{
+    max-width: 900px; margin:0 auto;
+    padding: 0 max(20px, env(safe-area-inset-left)) calc(80px + env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-right));
+  }
+
+  /* ---------- bunting divider ---------- */
+  .bunting{
+    display:flex; justify-content:center; gap:0; padding: 10px 0 26px;
+    overflow:hidden;
+  }
+  .bunting span{
+    width: 34px; height: 44px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    margin: 0 3px;
+    transform-origin: top center;
+    animation: sway 4.5s ease-in-out infinite;
+    box-shadow: var(--shadow-sm);
+  }
+  .bunting span:nth-child(5n+1){ background: var(--charcoal); animation-delay: 0s;}
+  .bunting span:nth-child(5n+2){ background: var(--red); animation-delay: .2s;}
+  .bunting span:nth-child(5n+3){ background: var(--green); animation-delay: .4s;}
+  .bunting span:nth-child(5n+4){ background: var(--gold); animation-delay: .6s;}
+  .bunting span:nth-child(5n+5){ background: var(--red-dark); animation-delay: .8s;}
+  @keyframes sway{
+    0%,100%{ transform: rotate(-3deg); }
+    50%{ transform: rotate(3deg); }
+  }
+  @media (prefers-reduced-motion: reduce){ .bunting span{ animation: none; } }
+
+  /* ---------- control booth ---------- */
+  .booth{
+    position: sticky; top:0; z-index:50;
+    background: var(--cream-2);
+    border-bottom: 3px solid var(--ink);
+    padding: calc(10px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
+  }
+  .booth-inner{
+    max-width:900px; margin:0 auto;
+    display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; justify-content:space-between;
+  }
+  .booth-title{ font-family:"Baloo 2"; font-weight:700; font-size:0.95rem; color:var(--ink-soft); display:flex; align-items:center; gap:8px;}
+  .booth-group{ display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .booth-label{ font-size:0.8rem; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em;}
+  .chip-btn{
+    border:2px solid var(--ink); background:#fff; color:var(--ink);
+    border-radius:999px; padding:6px 14px; font-weight:700; font-size:0.85rem;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .chip-btn[aria-pressed="true"]{ background: var(--ink); color:#fff; }
+  .step-btn{
+    width:40px; height:40px; border-radius:999px; border:2px solid var(--ink);
+    background:#fff; color:var(--ink); font-weight:800; font-size:1rem; line-height:1;
+  }
+
+  /* ---------- nav tabs ---------- */
+  .navtabs{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; padding:6px 0 2px; }
+  .navtab{
+    border:2px solid var(--ink); background:#fff; color:var(--ink);
+    border-radius:999px; padding:7px 15px; font-weight:700; font-size:0.82rem;
+    text-decoration:none;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{ text-align:center; padding: 34px 0 6px; }
+  .hero .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background: var(--gold); color: var(--ink); border:2px solid var(--ink);
+    border-radius:999px; padding:6px 16px; font-weight:700; font-size:0.85rem;
+    letter-spacing:.04em; margin-bottom:18px;
+  }
+  .hero h1{ font-size: clamp(2.4rem, 6vw, 3.6rem); line-height:1.05; }
+  .hero h1 .hl{ color: var(--red); }
+  .hero p.sub{ max-width: 60ch; margin: 16px auto 0; font-size:1.15rem; color: var(--ink-soft); }
+  .bell-wrap{ margin: 22px auto 0; width:130px; }
+  .bell{ animation: swing 3.2s ease-in-out infinite; transform-origin: top center; }
+  @keyframes swing{
+    0%,100%{ transform: rotate(-5deg); }
+    50%{ transform: rotate(5deg); }
+  }
+  @media (prefers-reduced-motion: reduce){ .bell{ animation:none; } }
+
+  /* ---------- section shell ---------- */
+  section{ padding-top: 56px; }
+  .section-head{ text-align:center; margin-bottom: 30px; }
+  .section-head .kicker{
+    display:block; font-family:"Baloo 2"; font-weight:700; font-size:0.95rem;
+    color: var(--band-color, var(--teal-dark)); text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;
+  }
+  .section-head h2{ font-size: clamp(1.8rem, 4vw, 2.4rem); }
+  .section-head p{ max-width:58ch; margin:12px auto 0; color:var(--ink-soft); }
+
+  /* ---------- preamble ---------- */
+  .preamble-card{
+    background:#fff; border:3px solid var(--ink); border-radius: var(--radius);
+    box-shadow: var(--shadow-md); padding: 28px clamp(18px,4vw,40px);
+  }
+  .play-row{ display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; margin-bottom:22px;}
+  .big-play{
+    display:inline-flex; align-items:center; gap:10px;
+    background: var(--red); color:#fff; border:3px solid var(--ink);
+    border-radius:999px; padding:14px 26px; font-family:"Baloo 2"; font-weight:700;
+    font-size:1.1rem; box-shadow: var(--shadow-sm);
+  }
+  .big-play:active{ transform: translateY(3px); box-shadow:none; }
+  .phrase-list{ display:flex; flex-direction:column; gap:10px; font-size:1.15rem; font-weight:700; }
+  .phrase{
+    padding:8px 14px; border-radius:12px; transition: background-color .25s ease, color .25s ease;
+    color: var(--ink-soft);
+  }
+  .phrase.active{ background: var(--gold); color: var(--ink); }
+  .phrase.done{ color: var(--ink); }
+
+  /* ---------- branches / pillars ---------- */
+  .branch-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap:22px; }
+  .branch-card{
+    background:#fff; border:3px solid var(--ink); border-radius: var(--radius);
+    box-shadow: var(--shadow-md); padding:22px; text-align:center;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .branch-icon{ width:76px; height:76px; }
+  .branch-name{ font-family:"Baloo 2"; font-weight:800; font-size:1.25rem; }
+  .branch-role{ font-weight:700; color:var(--ink-soft); font-size:0.92rem; text-transform:uppercase; letter-spacing:.03em;}
+  .branch-fact{ font-size:1rem; min-height: 4.6em; }
+  .branch-buttons{ display:flex; gap:10px; margin-top:6px; flex-wrap:wrap; justify-content:center;}
+  .pill-btn{
+    border:2px solid var(--ink); border-radius:999px; padding:9px 16px; font-weight:700; font-size:0.9rem;
+    background:#fff; color:var(--ink);
+  }
+  .pill-btn.on{ color:#fff; }
+
+  .seesaw-wrap{ margin: 30px auto 0; max-width: 460px; text-align:center; }
+  .seesaw{ position:relative; height:90px; }
+  .fulcrum{
+    position:absolute; left:50%; bottom:0; width:0; height:0;
+    border-left:26px solid transparent; border-right:26px solid transparent; border-bottom:46px solid var(--ink-soft);
+    transform: translateX(-50%);
+  }
+  .beam{
+    position:absolute; left:50%; bottom:44px; width:260px; height:14px;
+    background: var(--green); border:3px solid var(--ink); border-radius:8px;
+    transform-origin:center; transform: translate(-50%,0) rotate(var(--tilt,0deg));
+    transition: transform .5s ease;
+    display:flex; align-items:center; justify-content:space-between; padding:0 8px;
+  }
+  .beam b{ font-size:0.7rem; color:#fff; }
+  .balance-msg{ font-family:"Baloo 2"; font-weight:700; margin-top:10px; color: var(--green-dark); min-height:1.6em; }
+
+  .counties-wrap{ margin: 34px auto 0; max-width: 620px; text-align:center; }
+  .counties-grid{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(14px,1fr)); gap:5px;
+    margin: 14px auto 0; max-width: 460px;
+  }
+  .county-dot{ width:100%; aspect-ratio:1; border-radius:4px; background: var(--cream-2); border:2px solid var(--ink); transition: background-color .04s ease; }
+  .county-dot.on{ background: var(--gold); }
+  .counties-msg{ font-family:"Baloo 2"; font-weight:700; margin-top:10px; color: var(--gold-dark); min-height:1.6em; }
+
+  .commissions-wrap{ margin: 40px auto 0; text-align:center; }
+  .commissions-label{ font-family:"Baloo 2"; font-weight:700; font-size:1.05rem; margin-bottom:14px; }
+  .commission-chips{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .commission-chip{
+    border:2px solid var(--ink); border-radius:999px; padding:6px 13px; font-weight:700; font-size:0.8rem;
+    background:#fff;
+  }
+
+  /* ---------- bill of rights carousel ---------- */
+  .card-stage{ display:flex; align-items:center; justify-content:center; gap:14px; }
+  .arrow-btn{
+    flex:0 0 auto; width:52px; height:52px; border-radius:999px; border:3px solid var(--ink);
+    background:#fff; font-size:1.4rem; font-weight:800; color:var(--ink);
+  }
+  .amend-card{
+    flex:1 1 auto; max-width: 620px; min-height: 300px;
+    background:#fff; border:3px solid var(--ink); border-radius: var(--radius);
+    box-shadow: var(--shadow-md); padding: 28px clamp(18px,4vw,36px);
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .amend-top{ display:flex; align-items:center; gap:14px; }
+  .amend-num{
+    font-family:"Baloo 2"; font-weight:800; font-size:1.7rem; color:#fff;
+    width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    border:3px solid var(--ink); flex:0 0 auto; text-align:center; line-height:1.1;
+  }
+  .amend-num small{ display:block; font-size:0.55rem; font-weight:700; opacity:.85; }
+  .amend-title{ font-family:"Baloo 2"; font-weight:700; font-size:1.2rem; }
+  .amend-kid{ font-size:1.1rem; font-weight:700; }
+  .amend-full{ color: var(--ink-soft); font-size:0.95rem; }
+  .amend-actions{ margin-top:auto; display:flex; gap:10px; flex-wrap:wrap; }
+  .dots{ display:flex; justify-content:center; gap:7px; margin-top:18px; flex-wrap:wrap; }
+  .dot{ position:relative; width:13px; height:13px; border-radius:50%; border:2px solid var(--ink); background:#fff; }
+  .dot::before{ content:''; position:absolute; inset:-11px; }
+  .dot.active{ background: var(--plum); }
+
+  /* ---------- katiba (full constitution) browser ---------- */
+  .katiba-search{
+    display:block; width:100%; max-width:520px; margin:0 auto 26px;
+    border:3px solid var(--ink); border-radius:999px; padding:13px 20px;
+    font-family:inherit; font-size:1rem; background:#fff; color:var(--ink);
+  }
+  .chapter-list{ display:flex; flex-direction:column; gap:14px; }
+  .chapter-item{
+    background:#fff; border:3px solid var(--ink); border-radius: var(--radius);
+    box-shadow: var(--shadow-sm); overflow:hidden;
+  }
+  .chapter-item summary{
+    list-style:none; cursor:pointer; padding:16px 20px; display:flex; align-items:center; gap:14px;
+    font-family:"Baloo 2"; font-weight:700; font-size:1.05rem;
+  }
+  .chapter-item summary::-webkit-details-marker{ display:none; }
+  .chapter-item summary::before{ content:'▸'; transition: transform .2s ease; flex:0 0 auto; }
+  .chapter-item[open] summary::before{ transform: rotate(90deg); }
+  .chapter-num{
+    flex:0 0 auto; width:38px; height:38px; border-radius:50%; background: var(--teal); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:0.95rem; border:2px solid var(--ink);
+  }
+  .chapter-body{ padding: 0 20px 20px; border-top: 2px solid var(--paper-line); }
+  .article-block{ padding:16px 0; border-bottom:1px solid var(--paper-line); }
+  .article-block:last-child{ border-bottom:none; }
+  .article-block h4{ font-family:"Baloo 2"; font-size:1.02rem; margin-bottom:8px; }
+  .article-block p{ margin:0 0 6px; color:var(--ink-soft); font-size:0.96rem; }
+  .katiba-empty{ text-align:center; color:var(--ink-soft); padding:20px; }
+
+  /* ---------- quiz ---------- */
+  .quiz-card{
+    background:#fff; border:3px solid var(--ink); border-radius: var(--radius);
+    box-shadow: var(--shadow-md); padding: 28px clamp(18px,4vw,36px);
+  }
+  .quiz-progress{ font-weight:700; color:var(--ink-soft); margin-bottom:10px; }
+  .quiz-q{ font-family:"Baloo 2"; font-size:1.3rem; margin-bottom:18px; }
+  .quiz-opts{ display:grid; gap:12px; }
+  .quiz-opt{
+    text-align:left; border:3px solid var(--ink); border-radius:16px; padding:14px 18px;
+    background:#fff; font-size:1.02rem; font-weight:700; color:var(--ink);
+  }
+  .quiz-opt.correct{ background: var(--green); color:#fff; }
+  .quiz-opt.wrong{ background: var(--red); color:#fff; }
+  .quiz-feedback{ margin-top:16px; font-weight:700; font-family:"Baloo 2"; font-size:1.1rem; min-height:1.6em; }
+  .quiz-done{ text-align:center; }
+  .stars-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:4px; margin:14px 0; max-width:420px; margin-left:auto; margin-right:auto; font-size:1.1rem; }
+  .final-btn{
+    border:3px solid var(--ink); background: var(--gold); color:var(--ink);
+    border-radius:999px; padding:12px 26px; font-family:"Baloo 2"; font-weight:700; font-size:1.05rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* quiz setup screen */
+  .quiz-setup{ display:flex; flex-direction:column; gap:26px; }
+  .setup-label{ font-family:"Baloo 2"; font-weight:700; font-size:1.1rem; margin-bottom:12px; }
+  .chip-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .cat-chip{
+    display:inline-flex; align-items:center; gap:8px;
+    border:3px solid var(--ink); border-radius:14px; padding:10px 16px;
+    background:#fff; font-weight:700; font-size:0.9rem; color:var(--ink);
+    transition: opacity .2s ease;
+  }
+  .cat-chip .swatch{ width:13px; height:13px; border-radius:50%; flex:0 0 auto; }
+  .cat-chip[aria-pressed="false"]{ opacity:0.42; }
+  .time-chip{
+    border:3px solid var(--ink); border-radius:999px; padding:10px 22px;
+    background:#fff; font-family:"Baloo 2"; font-weight:700; font-size:1rem; color:var(--ink);
+  }
+  .time-chip[aria-pressed="true"]{ background: var(--ink); color:#fff; }
+  .setup-hint{ color:var(--ink-soft); font-size:0.92rem; margin-top:12px; }
+  .start-btn{
+    align-self:center; border:3px solid var(--ink); background: var(--red); color:#fff;
+    border-radius:999px; padding:16px 36px; font-family:"Baloo 2"; font-weight:700; font-size:1.15rem;
+    box-shadow: var(--shadow-md);
+  }
+  .start-btn:active{ transform: translateY(3px); box-shadow:none; }
+
+  /* quiz in-play HUD */
+  .quiz-hud{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:12px; }
+  .timer-display{ font-family:"Baloo 2"; font-weight:800; font-size:1.5rem; font-variant-numeric: tabular-nums; }
+  .timer-display.low{ color: var(--red-dark); }
+  .hud-score{ font-weight:700; color:var(--ink-soft); font-size:0.95rem; }
+  .timer-track{
+    height:12px; border-radius:999px; background: var(--cream-2); border:2px solid var(--ink);
+    overflow:hidden; margin-bottom:20px;
+  }
+  .timer-fill{ height:100%; background: var(--green); transition: width 1s linear, background-color .5s ease; }
+  .timer-fill.low{ background: var(--red); }
+  .finish-btn{
+    border:2px solid var(--ink); background:#fff; color:var(--ink);
+    border-radius:999px; padding:8px 16px; font-weight:700; font-size:0.85rem; flex:0 0 auto;
+  }
+  .quiz-cat-badge{
+    display:inline-block; color:#fff; font-weight:700; font-size:0.78rem; text-transform:uppercase;
+    letter-spacing:.05em; padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+
+  footer{ text-align:center; padding: 50px 20px 30px; color: var(--ink-soft); font-size:0.9rem; }
+  footer .flag-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin:0 4px; }
+
+  .sr-only{ position:absolute; width:1px;height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+
+  /* ---------- background flag watermark ---------- */
+  .flag-bg{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    opacity:0.14;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--charcoal) 0, var(--charcoal) 12%,
+      #fff 12%, #fff 15%,
+      var(--red) 15%, var(--red) 33%,
+      #fff 33%, #fff 36%,
+      var(--green) 36%, var(--green) 54%,
+      var(--cream-2) 54%, var(--cream-2) 100%
+    );
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 88%);
+            mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 88%);
+  }
+  @media (prefers-reduced-transparency: reduce){
+    .flag-bg{ opacity:0.07; }
+  }
+  html.contrast .flag-bg{ opacity:0.04; }
+
+  @media (max-width: 560px){
+    .card-stage{ gap:8px; }
+    .arrow-btn{ width:44px; height:44px; font-size:1.1rem; }
+    .counties-grid{ grid-template-columns: repeat(auto-fill, minmax(11px,1fr)); }
+  }
+</style>
+
+<div class="flag-bg" aria-hidden="true"></div>
+
+<div class="booth" role="region" aria-label="Accessibility controls">
+  <div class="booth-inner">
+    <div class="booth-title">🎛️ Control Booth</div>
+    <div class="booth-group" role="group" aria-label="Text size">
+      <span class="booth-label">Text size</span>
+      <button class="step-btn" id="sizeDown" aria-label="Decrease text size">A−</button>
+      <button class="step-btn" id="sizeUp" aria-label="Increase text size">A+</button>
+    </div>
+    <div class="booth-group">
+      <button class="chip-btn" id="contrastBtn" aria-pressed="false">◐ High contrast</button>
+      <button class="chip-btn" id="soundBtn" aria-pressed="true">🔊 Sound on</button>
+    </div>
+  </div>
+  <div class="navtabs">
+    <a class="navtab" href="#preamble">Preamble</a>
+    <a class="navtab" href="#branches">Government</a>
+    <a class="navtab" href="#rights">Bill of Rights</a>
+    <a class="navtab" href="#katiba">Read the Katiba</a>
+    <a class="navtab" href="#quiz">Quiz</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="bunting" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="eyebrow">🛡️ Your Guide to the Katiba 🇰🇪</div>
+    <h1>The <span class="hl">Katiba</span><br>Jam!</h1>
+    <p class="sub">Tap, listen, and play your way through the Constitution of Kenya and the government it built — for every age, from first graders to grandparents.</p>
+    <div class="bell-wrap">
+      <svg class="bell" viewBox="0 0 140 150" role="img" aria-label="The flag of Kenya, worked into a shield and spears mascot">
+        <line x1="48" y1="92" x2="98" y2="15" stroke="#8A5A2B" stroke-width="3.5" stroke-linecap="round"/>
+        <polygon points="0,-9 2,-3 0,1.5 -2,-3" fill="#F2F2F2" stroke="var(--ink)" stroke-width="1.2" transform="translate(98,15) rotate(24.8)"/>
+        <line x1="92" y1="92" x2="42" y2="15" stroke="#8A5A2B" stroke-width="3.5" stroke-linecap="round"/>
+        <polygon points="0,-9 2,-3 0,1.5 -2,-3" fill="#F2F2F2" stroke="var(--ink)" stroke-width="1.2" transform="translate(42,15) rotate(-24.8)"/>
+        <path d="M70 34 C40 34 28 60 28 92 C28 112 40 126 70 134 C100 126 112 112 112 92 C112 60 100 34 70 34 Z"
+              fill="#fff" stroke="var(--ink)" stroke-width="5"/>
+        <path d="M70 40 C46 40 36 62 36 90 C36 106 46 118 70 126 L70 40 Z" fill="var(--charcoal)"/>
+        <path d="M70 40 C94 40 104 62 104 90 C104 106 94 118 70 126 L70 40 Z" fill="var(--red)"/>
+        <rect x="61" y="40" width="18" height="86" fill="#fff"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PREAMBLE -->
+  <section id="preamble" style="--band-color: var(--red-dark);">
+    <div class="section-head">
+      <span class="kicker">Wimbo Wa Kwanza · Song One</span>
+      <h2>We, the People of Kenya</h2>
+      <p>The Preamble is the Katiba's opening verse — the "why" behind everything that follows. Press play and watch the words light up as they're read out loud.</p>
+    </div>
+    <div class="preamble-card">
+      <div class="play-row">
+        <button class="big-play" id="playPreamble">▶ Play the song</button>
+        <button class="pill-btn" id="readPreamble">🗣️ Read it aloud</button>
+      </div>
+      <div class="phrase-list" id="phraseList"></div>
+    </div>
+  </section>
+
+  <!-- BRANCHES / PILLARS OF GOVERNMENT -->
+  <section id="branches" style="--band-color: var(--green-dark);">
+    <div class="section-head">
+      <span class="kicker">Serikali · Meet the Government</span>
+      <h2>Three Branches, One Nation — Plus a Fourth Pillar</h2>
+      <p>The Legislature, the Executive, and the Judiciary check and balance each other, just like a seesaw. Devolution then hands real power down to 47 counties. Tap a card to hear its sound.</p>
+    </div>
+    <div class="branch-grid" id="branchGrid"></div>
+    <div class="seesaw-wrap">
+      <p style="font-weight:700; color:var(--ink-soft); margin-bottom:6px;">Checks &amp; Balances Seesaw — give the three national branches a turn to keep it level!</p>
+      <div class="seesaw">
+        <div class="beam" id="beam"><b>⚖️</b><b>⚖️</b></div>
+        <div class="fulcrum"></div>
+      </div>
+      <div class="balance-msg" id="balanceMsg">Tap the Legislature, Executive, and Judiciary note buttons above.</div>
+    </div>
+    <div class="counties-wrap">
+      <p style="font-weight:700; color:var(--ink-soft); margin-bottom:2px;">Devolution — tap the County pillar's note to bloom all 47 counties</p>
+      <div class="counties-grid" id="countiesGrid" aria-hidden="true"></div>
+      <div class="counties-msg" id="countiesMsg">47 counties, each with its own Governor and County Assembly.</div>
+    </div>
+    <div class="commissions-wrap">
+      <div class="commissions-label">Independent Commissions &amp; Offices — the Katiba's referees</div>
+      <div class="commission-chips" id="commissionChips"></div>
+    </div>
+  </section>
+
+  <!-- BILL OF RIGHTS -->
+  <section id="rights" style="--band-color: var(--plum-dark);">
+    <div class="section-head">
+      <span class="kicker">Haki Zetu · Songbook</span>
+      <h2>The Bill of Rights, Chapter Four</h2>
+      <p>Chapter Four runs from Article 19 to Article 59 — one of the most expansive bills of rights in the world. Here's a spotlight on the big ones, in plain words first, full text second.</p>
+    </div>
+    <div class="card-stage">
+      <button class="arrow-btn" id="prevAmend" aria-label="Previous right">←</button>
+      <div class="amend-card" id="amendCard"></div>
+      <button class="arrow-btn" id="nextAmend" aria-label="Next right">→</button>
+    </div>
+    <div class="dots" id="amendDots"></div>
+  </section>
+
+  <!-- FULL CONSTITUTION -->
+  <section id="katiba" style="--band-color: var(--teal-dark);">
+    <div class="section-head">
+      <span class="kicker">Soma Katiba · Reference</span>
+      <h2>Read the Whole Katiba</h2>
+      <p>All 18 chapters of the Constitution of Kenya, 2010 — browse by chapter, or search for a word, article number, or topic.</p>
+    </div>
+    <input type="search" class="katiba-search" id="katibaSearch" placeholder="Search the Katiba — e.g. &quot;county&quot;, &quot;fair trial&quot;, &quot;Article 43&quot;" aria-label="Search the Constitution">
+    <div class="chapter-list" id="chapterList"></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" style="--band-color: var(--gold-dark);">
+    <div class="section-head">
+      <span class="kicker">Jaribu Ujuzi · Encore</span>
+      <h2>Katiba Quiz</h2>
+      <p>Questions across seven topics. Pick what to study and how many minutes you have — then answer as many as you can before the buzzer. No score is a bad score.</p>
+    </div>
+    <div class="quiz-card" id="quizCard"></div>
+  </section>
+
+  <footer>
+    <span class="flag-dot" style="background:var(--charcoal)"></span>
+    <span class="flag-dot" style="background:var(--red)"></span>
+    <span class="flag-dot" style="background:var(--green)"></span>
+    <br><br>
+    Made for every Kenyan, from first graders to grandparents. Turn the sound up, or down, and enjoy the show.<br>
+    Katiba Jam is an independent educational app and is not affiliated with, endorsed by, or sponsored by the Government of Kenya.
+  </footer>
+</div>
+
+<script src="data/constitution.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- accessibility controls ---------------- */
+  var root = document.documentElement;
+  var SCALE_MIN = 0.85, SCALE_MAX = 1.5, scale = 1;
+  try{ var saved = localStorage.getItem('kj_scale'); if(saved) scale = parseFloat(saved); }catch(e){}
+  function applyScale(){
+    root.style.setProperty('--scale', scale.toFixed(2));
+    try{ localStorage.setItem('kj_scale', scale); }catch(e){}
+  }
+  applyScale();
+  document.getElementById('sizeUp').addEventListener('click', function(){
+    scale = Math.min(SCALE_MAX, +(scale+0.1).toFixed(2)); applyScale();
+  });
+  document.getElementById('sizeDown').addEventListener('click', function(){
+    scale = Math.max(SCALE_MIN, +(scale-0.1).toFixed(2)); applyScale();
+  });
+
+  var contrastBtn = document.getElementById('contrastBtn');
+  var contrastOn = false;
+  try{ contrastOn = localStorage.getItem('kj_contrast') === '1'; }catch(e){}
+  function applyContrast(){
+    root.classList.toggle('contrast', contrastOn);
+    contrastBtn.setAttribute('aria-pressed', String(contrastOn));
+    contrastBtn.textContent = (contrastOn ? '● ' : '◐ ') + 'High contrast';
+  }
+  applyContrast();
+  contrastBtn.addEventListener('click', function(){
+    contrastOn = !contrastOn;
+    try{ localStorage.setItem('kj_contrast', contrastOn ? '1':'0'); }catch(e){}
+    applyContrast();
+  });
+
+  var soundBtn = document.getElementById('soundBtn');
+  var soundOn = true;
+  try{ var s = localStorage.getItem('kj_sound'); if(s!==null) soundOn = s === '1'; }catch(e){}
+  function applySound(){
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    soundBtn.textContent = soundOn ? '🔊 Sound on' : '🔈 Sound off';
+  }
+  applySound();
+  soundBtn.addEventListener('click', function(){
+    soundOn = !soundOn;
+    try{ localStorage.setItem('kj_sound', soundOn ? '1':'0'); }catch(e){}
+    applySound();
+    if(!soundOn && window.speechSynthesis) speechSynthesis.cancel();
+  });
+
+  /* ---------------- home-screen icon & install manifest ---------------- */
+  (function(){
+    try{
+      var linkIcon = document.createElement('link');
+      linkIcon.rel = 'icon';
+      linkIcon.href = 'assets/icons/icon-192.webp';
+      document.head.appendChild(linkIcon);
+
+      var linkApple = document.createElement('link');
+      linkApple.rel = 'apple-touch-icon';
+      linkApple.href = 'assets/icons/icon-192.webp';
+      document.head.appendChild(linkApple);
+
+      var manifest = {
+        name: 'Katiba Jam',
+        short_name: 'KatibaJam',
+        start_url: '.',
+        display: 'standalone',
+        background_color: '#FBF6EA',
+        theme_color: '#C8102E',
+        icons: [
+          { src: 'assets/icons/icon-192.webp', sizes: '192x192', type: 'image/webp', purpose: 'any' },
+          { src: 'assets/icons/icon-512.webp', sizes: '512x512', type: 'image/webp', purpose: 'any maskable' }
+        ]
+      };
+      var blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+      var linkManifest = document.createElement('link');
+      linkManifest.rel = 'manifest';
+      linkManifest.href = URL.createObjectURL(blob);
+      document.head.appendChild(linkManifest);
+    }catch(e){}
+  })();
+
+  /* ---------------- tiny audio engine ---------------- */
+  var AudioCtx = window.AudioContext || window.webkitAudioContext;
+  var actx = null;
+  function ctx(){ if(!actx) actx = new AudioCtx(); if(actx.state==='suspended') actx.resume(); return actx; }
+
+  function unlockAudio(){
+    try{ ctx(); }catch(e){}
+    document.removeEventListener('touchend', unlockAudio);
+    document.removeEventListener('click', unlockAudio);
+  }
+  document.addEventListener('touchend', unlockAudio, {once:true});
+  document.addEventListener('click', unlockAudio, {once:true});
+
+  function tone(freq, duration, opts){
+    if(!soundOn) return;
+    opts = opts || {};
+    var c = ctx();
+    var osc = c.createOscillator();
+    var gain = c.createGain();
+    osc.type = opts.type || 'sine';
+    osc.frequency.value = freq;
+    var now = c.currentTime;
+    var peak = opts.peak || 0.18;
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(peak, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    osc.connect(gain).connect(c.destination);
+    osc.start(now);
+    osc.stop(now + duration + 0.05);
+  }
+
+  function drumHit(){
+    if(!soundOn) return;
+    var c = ctx();
+    var bufferSize = c.sampleRate * 0.15;
+    var buffer = c.createBuffer(1, bufferSize, c.sampleRate);
+    var data = buffer.getChannelData(0);
+    for(var i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * Math.pow(1-i/bufferSize, 2); }
+    var src = c.createBufferSource(); src.buffer = buffer;
+    var filt = c.createBiquadFilter(); filt.type='lowpass'; filt.frequency.value=180;
+    var gain = c.createGain(); gain.gain.value = 0.5;
+    src.connect(filt).connect(gain).connect(c.destination);
+    src.start();
+  }
+
+  function fanfare(){
+    if(!soundOn) return;
+    [523.25,659.25,783.99,1046.5].forEach(function(f,i){
+      setTimeout(function(){ tone(f, 0.24, {type:'triangle', peak:0.15}); }, i*110);
+    });
+  }
+
+  function bellRing(){
+    if(!soundOn) return;
+    tone(523.25, 1.1, {type:'sine', peak:0.16});
+    tone(659.25, 1.1, {type:'sine', peak:0.08});
+  }
+
+  function riseRipple(){
+    if(!soundOn) return;
+    [392,440,494,523.25,587.33].forEach(function(f,i){
+      setTimeout(function(){ tone(f, 0.16, {type:'triangle', peak:0.12}); }, i*55);
+    });
+  }
+
+  var PENTATONIC = [261.63,293.66,329.63,392.00,440.00,523.25,587.33,659.25];
+
+  /* ---------------- Preamble sing-along (data-driven) ---------------- */
+  function preamblePhrases(){
+    var raw = (typeof KENYA_CONSTITUTION_PREAMBLE === 'string' && KENYA_CONSTITUTION_PREAMBLE.length)
+      ? KENYA_CONSTITUTION_PREAMBLE
+      : 'Loading the Preamble…';
+    // The compiled text uses a blank line between each clause of the Preamble;
+    // fall back to sentence-splitting if that structure isn't present.
+    var byParagraph = raw.split(/\n\s*\n/).map(function(s){ return s.replace(/\s+/g,' ').trim(); }).filter(Boolean);
+    if(byParagraph.length > 1) return byParagraph;
+    return raw.split(/(?<=[,;:.])\s+(?=[A-Z])/).map(function(s){ return s.trim(); }).filter(Boolean);
+  }
+  var preamble = preamblePhrases();
+  var phraseListEl = document.getElementById('phraseList');
+  function renderPhrases(){
+    phraseListEl.innerHTML = '';
+    preamble.forEach(function(p, i){
+      var div = document.createElement('div');
+      div.className = 'phrase';
+      div.id = 'phrase-'+i;
+      div.textContent = p;
+      phraseListEl.appendChild(div);
+    });
+  }
+  renderPhrases();
+
+  var singing = false;
+  document.getElementById('playPreamble').addEventListener('click', function(){
+    if(singing) return;
+    preamble = preamblePhrases();
+    renderPhrases();
+    singing = true;
+    var btn = this;
+    btn.textContent = '♪ Singing…';
+    var delay = 0;
+    preamble.forEach(function(p, i){
+      setTimeout(function(){
+        var el = document.getElementById('phrase-'+i);
+        if(el) el.className = 'phrase active';
+        tone(PENTATONIC[i % PENTATONIC.length], 0.45, {type:'triangle', peak:0.15});
+      }, delay);
+      setTimeout(function(){
+        var el = document.getElementById('phrase-'+i);
+        if(el) el.className = 'phrase done';
+      }, delay + 700);
+      delay += 720;
+    });
+    setTimeout(function(){ singing = false; btn.textContent = '▶ Play the song'; }, delay);
+  });
+
+  document.getElementById('readPreamble').addEventListener('click', function(){
+    if(!window.speechSynthesis) return;
+    speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(preamblePhrases().join(' '));
+    u.rate = 0.92;
+    speechSynthesis.speak(u);
+  });
+
+  /* ---------------- Branches / Pillars ---------------- */
+  var branches = [
+    {
+      key:'legislative', name:'The Legislature', role:'Parliament — writes the laws',
+      dark:'var(--green-dark)',
+      fact:'Parliament is bicameral: the National Assembly represents the people of each constituency, and the Senate represents the 47 counties. Together they make laws and hold the Executive to account.',
+      sound: drumHit,
+      icon: function(){ return '<svg viewBox="0 0 100 100" role="img" aria-label="A scroll of law"><rect x="20" y="18" width="60" height="64" rx="6" fill="#fff" stroke="var(--ink)" stroke-width="4"/><ellipse cx="20" cy="18" rx="8" ry="8" fill="var(--green)" stroke="var(--ink)" stroke-width="4"/><ellipse cx="80" cy="18" rx="8" ry="8" fill="var(--green)" stroke="var(--ink)" stroke-width="4"/><ellipse cx="20" cy="82" rx="8" ry="8" fill="var(--green-dark)" stroke="var(--ink)" stroke-width="4"/><ellipse cx="80" cy="82" rx="8" ry="8" fill="var(--green-dark)" stroke="var(--ink)" stroke-width="4"/><line x1="32" y1="34" x2="68" y2="34" stroke="var(--green)" stroke-width="4"/><line x1="32" y1="48" x2="68" y2="48" stroke="var(--green)" stroke-width="4"/><line x1="32" y1="62" x2="60" y2="62" stroke="var(--green)" stroke-width="4"/></svg>'; }
+    },
+    {
+      key:'executive', name:'The Executive', role:'The President — leads and enforces',
+      dark:'var(--red-dark)',
+      fact:'The President is Head of State, Head of Government, and Commander-in-Chief, elected directly by the people for up to two five-year terms. Cabinet Secretaries run government ministries but are not Members of Parliament.',
+      sound: fanfare,
+      icon: function(){ return '<svg viewBox="0 0 100 100" role="img" aria-label="A rising torch"><path d="M50 12 C58 22 62 32 54 40 C60 44 62 52 54 58 L46 58 C38 52 40 44 46 40 C38 32 42 22 50 12 Z" fill="var(--gold)" stroke="var(--ink)" stroke-width="4"/><rect x="42" y="56" width="16" height="30" fill="var(--red)" stroke="var(--ink)" stroke-width="4"/><rect x="30" y="84" width="40" height="10" rx="3" fill="var(--red-dark)" stroke="var(--ink)" stroke-width="4"/></svg>'; }
+    },
+    {
+      key:'judicial', name:'The Judiciary', role:'The Courts — keeps it fair',
+      dark:'var(--charcoal)',
+      fact:'Led by the Chief Justice, the Judiciary runs from the Supreme Court down through the Court of Appeal, the High Court, and subordinate courts. Judges answer only to the Constitution and the law — not to the President or Parliament.',
+      sound: bellRing,
+      icon: function(){ return '<svg viewBox="0 0 100 100" role="img" aria-label="A scale of justice"><line x1="50" y1="14" x2="50" y2="74" stroke="var(--ink)" stroke-width="5"/><line x1="24" y1="30" x2="76" y2="30" stroke="var(--ink)" stroke-width="5"/><line x1="24" y1="30" x2="14" y2="52" stroke="var(--charcoal)" stroke-width="4"/><line x1="24" y1="30" x2="34" y2="52" stroke="var(--charcoal)" stroke-width="4"/><path d="M14 52 Q24 66 34 52" fill="none" stroke="var(--ink-soft)" stroke-width="5"/><line x1="76" y1="30" x2="66" y2="52" stroke="var(--charcoal)" stroke-width="4"/><line x1="76" y1="30" x2="86" y2="52" stroke="var(--charcoal)" stroke-width="4"/><path d="M66 52 Q76 66 86 52" fill="none" stroke="var(--ink-soft)" stroke-width="5"/><rect x="40" y="74" width="20" height="10" rx="3" fill="var(--ink)"/></svg>'; }
+    },
+    {
+      key:'devolved', name:'Devolved Government', role:'47 Counties — power close to home',
+      dark:'var(--gold-dark)',
+      fact:'Kenya’s fourth pillar: 47 counties, each led by a Governor and a County Assembly, handle services like health, local roads, and early childhood education. Counties get a constitutionally guaranteed share of national revenue.',
+      sound: riseRipple,
+      icon: function(){ return '<svg viewBox="0 0 100 100" role="img" aria-label="A cluster of county map pins"><path d="M30 20 C22 20 16 26 16 34 C16 46 30 58 30 58 C30 58 44 46 44 34 C44 26 38 20 30 20 Z" fill="var(--gold)" stroke="var(--ink)" stroke-width="4"/><circle cx="30" cy="33" r="6" fill="#fff"/><path d="M68 34 C60 34 54 40 54 48 C54 60 68 72 68 72 C68 72 82 60 82 48 C82 40 76 34 68 34 Z" fill="var(--gold-dark)" stroke="var(--ink)" stroke-width="4"/><circle cx="68" cy="47" r="6" fill="#fff"/></svg>'; }
+    }
+  ];
+
+  var branchGrid = document.getElementById('branchGrid');
+  var activated = {};
+  branches.forEach(function(b){
+    var card = document.createElement('div');
+    card.className = 'branch-card';
+    card.innerHTML =
+      '<div class="branch-icon">'+b.icon()+'</div>'+
+      '<div class="branch-name">'+b.name+'</div>'+
+      '<div class="branch-role" style="color:'+b.dark+'">'+b.role+'</div>'+
+      '<div class="branch-fact">'+b.fact+'</div>'+
+      '<div class="branch-buttons">'+
+        '<button class="pill-btn note-btn" data-key="'+b.key+'" style="border-color:'+b.dark+'">🎵 Play its note</button>'+
+      '</div>';
+    branchGrid.appendChild(card);
+  });
+
+  var beam = document.getElementById('beam');
+  var balanceMsg = document.getElementById('balanceMsg');
+  var seesawOrder = { legislative:-8, executive:0, judicial:8 };
+  var seesawActivated = {};
+  function updateSeesaw(lastKey){
+    seesawActivated[lastKey] = true;
+    var count = Object.keys(seesawActivated).length;
+    if(count < 3){
+      beam.style.setProperty('--tilt', seesawOrder[lastKey]+'deg');
+      balanceMsg.textContent = 'Tapped ' + count + ' of 3 — keep going!';
+    } else {
+      beam.style.setProperty('--tilt', '0deg');
+      balanceMsg.textContent = '⚖️ Balanced! Every national branch got a turn — that\'s checks and balances.';
+    }
+  }
+
+  var countiesGrid = document.getElementById('countiesGrid');
+  var countiesMsg = document.getElementById('countiesMsg');
+  var COUNTY_COUNT = 47;
+  for(var ci=0; ci<COUNTY_COUNT; ci++){
+    var dot = document.createElement('div');
+    dot.className = 'county-dot';
+    countiesGrid.appendChild(dot);
+  }
+  var countiesBloomed = false;
+  function bloomCounties(){
+    if(countiesBloomed) return;
+    countiesBloomed = true;
+    var dots = countiesGrid.querySelectorAll('.county-dot');
+    dots.forEach(function(d, i){
+      setTimeout(function(){
+        d.classList.add('on');
+        if(i % 4 === 0) tone(440 + (i*3), 0.05, {type:'triangle', peak:0.06});
+      }, i*28);
+    });
+    setTimeout(function(){
+      countiesMsg.textContent = '🗺️ All 47 counties, blooming with their own Governor and County Assembly.';
+    }, dots.length*28 + 150);
+  }
+
+  document.querySelectorAll('.note-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var key = btn.getAttribute('data-key');
+      var b = branches.filter(function(x){ return x.key===key; })[0];
+      b.sound();
+      activated[key] = true;
+      btn.classList.add('on');
+      btn.style.background = b.dark;
+      btn.style.color = '#fff';
+      if(key === 'devolved'){ bloomCounties(); }
+      else { updateSeesaw(key); }
+    });
+  });
+
+  var COMMISSIONS = [
+    'IEBC — elections', 'Judicial Service Commission', 'Public Service Commission',
+    'National Police Service Commission', 'Teachers Service Commission',
+    'Salaries & Remuneration Commission', 'Commission on Revenue Allocation',
+    'National Land Commission', 'Auditor-General', 'Controller of Budget',
+    'Director of Public Prosecutions', 'Attorney-General', 'Central Bank of Kenya'
+  ];
+  var commissionChips = document.getElementById('commissionChips');
+  COMMISSIONS.forEach(function(c){
+    var span = document.createElement('span');
+    span.className = 'commission-chip';
+    span.textContent = c;
+    commissionChips.appendChild(span);
+  });
+
+  /* ---------------- Bill of Rights spotlight ---------------- */
+  function findArticle(chapterNum, articleNum){
+    if(typeof KENYA_CONSTITUTION === 'undefined') return null;
+    var chapter = KENYA_CONSTITUTION.filter(function(c){ return c.chapter === chapterNum; })[0];
+    if(!chapter || !chapter.articles) return null;
+    return chapter.articles.filter(function(a){ return a.num === articleNum; })[0] || null;
+  }
+  function articleFullText(articleNum){
+    var a = findArticle(4, articleNum);
+    if(a && a.clauses && a.clauses.length) return a.clauses.join(' ');
+    return 'Full legal text loading — see "Read the Katiba" once the full text has finished loading, or view Article '+articleNum+' on kenyalaw.org.';
+  }
+
+  var rightsSpotlight = [
+    { num:26, title:'Right to Life', color:'var(--red)',
+      kid:'Every person has the right to life, protected from the moment recognised by law.' },
+    { num:27, title:'Equality and Freedom from Discrimination', color:'var(--green)',
+      kid:'Everyone is equal before the law. No one can be discriminated against for who they are.' },
+    { num:28, title:'Human Dignity', color:'var(--charcoal)',
+      kid:'Every person’s dignity must be respected and protected.' },
+    { num:29, title:'Freedom and Security of the Person', color:'var(--gold-dark)',
+      kid:'You cannot be arbitrarily deprived of your freedom, tortured, or treated cruelly.' },
+    { num:31, title:'Privacy', color:'var(--teal)',
+      kid:'Your home, your belongings, your communications, and your family life are protected from prying.' },
+    { num:32, title:'Freedom of Conscience, Religion, Belief & Opinion', color:'var(--plum)',
+      kid:'You can believe, worship, or think as you choose.' },
+    { num:33, title:'Freedom of Expression', color:'var(--red)',
+      kid:'You can seek, receive, and share information and ideas — with limits around hate speech and incitement.' },
+    { num:34, title:'Freedom of the Media', color:'var(--green)',
+      kid:'The press can publish freely, without State control over content.' },
+    { num:35, title:'Access to Information', color:'var(--charcoal)',
+      kid:'You can ask the State for information it holds that affects your rights.' },
+    { num:36, title:'Freedom of Association', color:'var(--gold-dark)',
+      kid:'You can join, or refuse to join, any association, union, or political party.' },
+    { num:37, title:'Assembly, Demonstration & Petition', color:'var(--teal)',
+      kid:'You can gather, protest peacefully, and petition public authorities.' },
+    { num:38, title:'Political Rights', color:'var(--plum)',
+      kid:'Every citizen can form a party, campaign for one, and vote in free, fair elections.' },
+    { num:39, title:'Freedom of Movement & Residence', color:'var(--red)',
+      kid:'You can move around Kenya, live where you choose, and enter or leave the country.' },
+    { num:40, title:'Right to Property', color:'var(--green)',
+      kid:'You can own property, alone or with others, anywhere in Kenya.' },
+    { num:43, title:'Economic and Social Rights', color:'var(--charcoal)',
+      kid:'Everyone has a right to health care, housing, food, water, social security, and education.' },
+    { num:47, title:'Fair Administrative Action', color:'var(--gold-dark)',
+      kid:'Government decisions about you must be lawful, reasonable, and procedurally fair.' },
+    { num:48, title:'Access to Justice', color:'var(--teal)',
+      kid:'The State must ensure everyone can get justice, and it shouldn’t cost more than people can afford.' },
+    { num:50, title:'Fair Hearing', color:'var(--plum)',
+      kid:'If you’re accused of something, you get a fair, public trial, and you’re presumed innocent until proven guilty.' }
+  ];
+
+  var amendIndex = 0;
+  var amendCard = document.getElementById('amendCard');
+  var amendDots = document.getElementById('amendDots');
+  rightsSpotlight.forEach(function(a,i){
+    var d = document.createElement('span'); d.className='dot'; d.id='dot-'+i;
+    d.setAttribute('role','button'); d.setAttribute('tabindex','0');
+    d.setAttribute('aria-label','Go to Article '+a.num);
+    d.addEventListener('click', function(){ amendIndex = i; renderAmend(); });
+    d.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ amendIndex=i; renderAmend(); } });
+    amendDots.appendChild(d);
+  });
+
+  function renderAmend(){
+    var a = rightsSpotlight[amendIndex];
+    amendCard.innerHTML =
+      '<div class="amend-top">'+
+        '<div class="amend-num" style="background:'+a.color+'"><small>ART.</small>'+a.num+'</div>'+
+        '<div class="amend-title">'+a.title+'</div>'+
+      '</div>'+
+      '<div class="amend-kid">'+a.kid+'</div>'+
+      '<div class="amend-full">'+articleFullText(a.num)+'</div>'+
+      '<div class="amend-actions">'+
+        '<button class="pill-btn" id="readAmend">🗣️ Read aloud</button>'+
+      '</div>';
+    document.querySelectorAll('.dot').forEach(function(d,i){ d.classList.toggle('active', i===amendIndex); });
+    document.getElementById('readAmend').addEventListener('click', function(){
+      if(!window.speechSynthesis) return;
+      speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance('Article '+a.num+'. '+a.title+'. '+articleFullText(a.num));
+      u.rate = 0.94;
+      speechSynthesis.speak(u);
+    });
+  }
+  renderAmend();
+
+  document.getElementById('prevAmend').addEventListener('click', function(){
+    amendIndex = (amendIndex - 1 + rightsSpotlight.length) % rightsSpotlight.length;
+    renderAmend(); tone(392,0.15,{type:'triangle',peak:0.1});
+  });
+  document.getElementById('nextAmend').addEventListener('click', function(){
+    amendIndex = (amendIndex + 1) % rightsSpotlight.length;
+    renderAmend(); tone(440,0.15,{type:'triangle',peak:0.1});
+  });
+
+  /* ---------------- Read the Katiba (full constitution browser) ---------------- */
+  var chapterListEl = document.getElementById('chapterList');
+  var katibaSearch = document.getElementById('katibaSearch');
+
+  function renderChapters(filterText){
+    chapterListEl.innerHTML = '';
+    if(typeof KENYA_CONSTITUTION === 'undefined' || !KENYA_CONSTITUTION.length){
+      chapterListEl.innerHTML = '<p class="katiba-empty">The full text is still loading. Check back shortly.</p>';
+      return;
+    }
+    var q = (filterText || '').trim().toLowerCase();
+    var anyMatch = false;
+    KENYA_CONSTITUTION.forEach(function(chapter, ci){
+      var articles = chapter.articles || [];
+      var matchedArticles = !q ? articles : articles.filter(function(a){
+        var hay = ('article '+a.num+' '+a.title+' '+(a.clauses||[]).join(' ')).toLowerCase();
+        return hay.indexOf(q) !== -1;
+      });
+      var chapterMatches = !q || chapter.title.toLowerCase().indexOf(q) !== -1 || ('chapter '+chapter.chapter).indexOf(q) !== -1;
+      if(q && !chapterMatches && matchedArticles.length === 0) return;
+      anyMatch = true;
+      var showArticles = q && !chapterMatches ? matchedArticles : articles;
+
+      var details = document.createElement('details');
+      details.className = 'chapter-item';
+      if(q) details.open = true;
+      var summary = document.createElement('summary');
+      summary.innerHTML = '<span class="chapter-num">'+chapter.chapter+'</span><span>'+chapter.title+'</span>';
+      details.appendChild(summary);
+
+      var body = document.createElement('div');
+      body.className = 'chapter-body';
+      if(!showArticles.length){
+        body.innerHTML = '<p style="padding-top:14px; color:var(--ink-soft);">Full article text for this chapter is still loading.</p>';
+      } else {
+        showArticles.forEach(function(a){
+          var block = document.createElement('div');
+          block.className = 'article-block';
+          var clauses = (a.clauses || []).map(function(c){ return '<p>'+c+'</p>'; }).join('');
+          block.innerHTML = '<h4>Article '+a.num+' — '+a.title+'</h4>'+clauses;
+          body.appendChild(block);
+        });
+      }
+      if(chapter.schedules && chapter.schedules.length && (!q || chapterMatches)){
+        var schedBlock = document.createElement('div');
+        schedBlock.className = 'article-block';
+        schedBlock.innerHTML = '<h4>The Schedules</h4>' +
+          chapter.schedules.map(function(s){
+            return '<p><strong>'+s.num+'. '+s.title+'</strong> — see '+s.articleRef+'</p>';
+          }).join('');
+        body.appendChild(schedBlock);
+      }
+      details.appendChild(body);
+      chapterListEl.appendChild(details);
+    });
+    if(!anyMatch){
+      chapterListEl.innerHTML = '<p class="katiba-empty">No matches. Try a different word, or an article number like "43".</p>';
+    }
+  }
+  renderChapters('');
+  var searchDebounce = null;
+  katibaSearch.addEventListener('input', function(){
+    clearTimeout(searchDebounce);
+    var val = katibaSearch.value;
+    searchDebounce = setTimeout(function(){ renderChapters(val); }, 180);
+  });
+
+  /* ---------------- Quiz ---------------- */
+  var CATS = [
+    { key:'preamble',    label:'Preamble & Founding Values', color:'var(--red)' },
+    { key:'legislative', label:'The Legislature',            color:'var(--green)' },
+    { key:'executive',   label:'The Executive',               color:'var(--red-dark)' },
+    { key:'judicial',    label:'The Judiciary',                color:'var(--charcoal)' },
+    { key:'rights',      label:'Bill of Rights',               color:'var(--teal)' },
+    { key:'devolution',  label:'Devolution & Counties',        color:'var(--gold-dark)' },
+    { key:'history',     label:'History & Founding',            color:'var(--plum)' }
+  ];
+  var TIME_OPTIONS = [10,15,20,25,30];
+
+  var QUIZ_BANK = [
+    /* Preamble & Founding Values */
+    { cat:'preamble', q:'What is the Swahili word for "Constitution"?', opts:['Bunge','Katiba','Wananchi','Harambee'], correct:1 },
+    { cat:'preamble', q:'The Preamble of Kenya’s Constitution begins with which three words?', opts:['I, the President','We, the people','In the beginning','God bless Kenya'], correct:1 },
+    { cat:'preamble', q:'The Preamble says Kenyans are proud of their ethnic, cultural and religious...?', opts:['History','Diversity','Boundaries','Institutions'], correct:1 },
+    { cat:'preamble', q:'According to the Preamble, who determines the form of governance of Kenya?', opts:['Parliament alone','The courts','The people of Kenya, exercising their sovereign right','The United Nations'], correct:2 },
+    { cat:'preamble', q:'The Preamble commits Kenyans to nurturing and protecting the well-being of the individual, the family, communities, and the...?', opts:['Economy','Nation','Military','Region'], correct:1 },
+    { cat:'preamble', q:'Article 1 of the Constitution states that all sovereign power belongs to...?', opts:['Parliament','The President','The people of Kenya','The courts'], correct:2 },
+    { cat:'preamble', q:'What does Article 2 say about the Constitution’s status?', opts:['It is one of several equal laws','It is the supreme law of the Republic','It only applies to national government','It can be ignored during emergencies'], correct:1 },
+    { cat:'preamble', q:'How many chapters does the Constitution of Kenya, 2010 have?', opts:['10','14','18','24'], correct:2 },
+    { cat:'preamble', q:'What are the two official languages of the Republic of Kenya named in the Constitution?', opts:['English and French','Swahili and Kikuyu','English and Kiswahili','English and Arabic'], correct:2 },
+    { cat:'preamble', q:'Which Kiswahili word, used across Kenyan civic life, means "let us all pull together"?', opts:['Uhuru','Harambee','Nyayo','Wananchi'], correct:1 },
+    { cat:'preamble', q:'What does Article 3 say every person has a duty to do?', opts:['Pay all taxes owed','Respect, uphold and defend the Constitution','Join a political party','Serve in the military'], correct:1 },
+    { cat:'preamble', q:'Kenya is described in Article 4 as a sovereign Republic with what kind of system of government?', opts:['A multi-party democratic republic','A one-party state','A constitutional monarchy','A federation of independent states'], correct:0 },
+
+    /* Legislature */
+    { cat:'legislative', q:'Which branch of government makes the laws?', opts:['The Executive','The Judiciary','The Legislature','The Commissions'], correct:2 },
+    { cat:'legislative', q:'Kenya’s Parliament is made up of two houses. What are they called?', opts:['The Senate and the National Assembly','The Senate and the Cabinet','The Assembly and the Council','The Upper and Lower Courts'], correct:0 },
+    { cat:'legislative', q:'Which house of Parliament represents the 47 counties?', opts:['The National Assembly','The Senate','The Judicial Service Commission','The Council of Governors'], correct:1 },
+    { cat:'legislative', q:'How many elected senators does the Senate have — one per county?', opts:['24','36','47','67'], correct:2 },
+    { cat:'legislative', q:'What is a proposed law called before Parliament passes it?', opts:['An Act','A Bill','A Gazette Notice','A Motion'], correct:1 },
+    { cat:'legislative', q:'Where must a Bill concerning county revenue generally originate?', opts:['The Senate','The National Assembly','The Judiciary','The Cabinet'], correct:0 },
+    { cat:'legislative', q:'If the President has reservations about a Bill, what can happen?', opts:['The Bill is automatically cancelled','The President can refer it back to Parliament with reservations','The Supreme Court rewrites it','Nothing — the President must always sign'], correct:1 },
+    { cat:'legislative', q:'What is it called when Parliament removes the President for serious wrongdoing?', opts:['A recall','Impeachment','Dissolution','A vote of no confidence'], correct:1 },
+    { cat:'legislative', q:'How long is one term of Parliament, unless dissolved early?', opts:['3 years','5 years','6 years','7 years'], correct:1 },
+    { cat:'legislative', q:'Who represents each county specifically as a "Woman Representative" in the National Assembly?', opts:['One per county','One per constituency','Two per county','None — this seat doesn’t exist'], correct:0 },
+    { cat:'legislative', q:'What is the National Assembly’s presiding officer called?', opts:['The Prime Minister','The Speaker','The Senate Majority Leader','The Clerk'], correct:1 },
+    { cat:'legislative', q:'Which of these is a key job of Parliament, besides making laws?', opts:['Deciding court cases','Overseeing the Executive and national revenue','Appointing county governors','Running elections'], correct:1 },
+    { cat:'legislative', q:'What must the House and Senate typically agree on before a Bill affecting counties becomes law?', opts:['Nothing — either house alone decides','The same version of the Bill','A public referendum','Approval from the Judiciary'], correct:1 },
+    { cat:'legislative', q:'Members of the National Assembly are elected from which units?', opts:['Counties only','Wards','Constituencies','Sub-counties'], correct:2 },
+
+    /* Executive */
+    { cat:'executive', q:'Which branch of government enforces and implements the laws?', opts:['The Legislature','The Judiciary','The Executive','The Commissions'], correct:2 },
+    { cat:'executive', q:'Who is Kenya’s Head of State, Head of Government, and Commander-in-Chief?', opts:['The Chief Justice','The Speaker','The President','The Attorney-General'], correct:2 },
+    { cat:'executive', q:'How long is one presidential term in Kenya?', opts:['4 years','5 years','6 years','7 years'], correct:1 },
+    { cat:'executive', q:'What is the maximum number of terms a President can serve?', opts:['One','Two','Three','There is no limit'], correct:1 },
+    { cat:'executive', q:'Who runs on the same ticket as the President in an election?', opts:['The Chief Justice','The Speaker of the National Assembly','The Deputy President','The Attorney-General'], correct:2 },
+    { cat:'executive', q:'Are Cabinet Secretaries allowed to also be Members of Parliament?', opts:['Yes, always','No — Cabinet Secretaries are not MPs','Only the Deputy President can be','Only if elected twice'], correct:1 },
+    { cat:'executive', q:'Who appoints Cabinet Secretaries, subject to National Assembly approval?', opts:['The President','The Chief Justice','The Speaker','The Senate'], correct:0 },
+    { cat:'executive', q:'What is the official residence of Kenya’s President called?', opts:['The Capitol','State House','Harambee House','The White House'], correct:1 },
+    { cat:'executive', q:'Who serves as the principal legal adviser to the national government?', opts:['The Chief Justice','The Attorney-General','The Director of Public Prosecutions','The Speaker'], correct:1 },
+    { cat:'executive', q:'For a candidate to win the presidency outright in the first round, they need more than half the votes cast and at least 25% of the vote in how many counties?', opts:['At least 12 counties','At least 24 counties','All 47 counties','Only Nairobi and Mombasa'], correct:1 },
+    { cat:'executive', q:'What happens if no presidential candidate meets the winning threshold in the first round?', opts:['Parliament chooses the President','A runoff is held between the top two candidates','The election is cancelled for a year','The Chief Justice decides'], correct:1 },
+    { cat:'executive', q:'The President is Commander-in-Chief of which institution?', opts:['The National Police Service','The Kenya Defence Forces','The Judiciary','The Senate'], correct:1 },
+    { cat:'executive', q:'Which of these is NOT a role of the President?', opts:['Assenting to Bills','Appointing certain public officers','Deciding court cases','Nominating Cabinet Secretaries'], correct:2 },
+
+    /* Judiciary */
+    { cat:'judicial', q:'Which branch of government interprets the law and settles disputes?', opts:['The Legislature','The Executive','The Judiciary','The Council of Governors'], correct:2 },
+    { cat:'judicial', q:'Who is the head of Kenya’s Judiciary?', opts:['The Attorney-General','The Chief Justice','The President','The Speaker'], correct:1 },
+    { cat:'judicial', q:'What is the highest court in Kenya?', opts:['The Court of Appeal','The High Court','The Supreme Court','The Magistrates’ Court'], correct:2 },
+    { cat:'judicial', q:'Which court has exclusive jurisdiction to hear disputes about the presidential election result?', opts:['The High Court','The Court of Appeal','The Supreme Court','A Magistrates’ Court'], correct:2 },
+    { cat:'judicial', q:'Below the Supreme Court and Court of Appeal, which court handles most first-instance civil and criminal cases?', opts:['The High Court','Kadhis’ Courts only','The Senate','County Assemblies'], correct:0 },
+    { cat:'judicial', q:'What do Kadhis’ Courts mainly handle?', opts:['Land disputes for everyone','Questions of Muslim law on personal status for those who submit to their jurisdiction','Election petitions','Tax disputes'], correct:1 },
+    { cat:'judicial', q:'Which body recommends judges for appointment to the President?', opts:['The Judicial Service Commission','The National Assembly','The Cabinet','The Council of Governors'], correct:0 },
+    { cat:'judicial', q:'According to the Constitution, in exercising judicial authority, judges are subject only to...?', opts:['The President','The Constitution and the law','Parliament’s instructions','Public opinion'], correct:1 },
+    { cat:'judicial', q:'How can a sitting judge generally be removed from office?', opts:['A simple presidential order','Through a tribunal process for specified grounds, like gross misconduct','A public vote','Parliament can fire them directly, anytime'], correct:1 },
+    { cat:'judicial', q:'What is it called when courts check whether a law or government action conforms to the Constitution?', opts:['Judicial review','Legislative override','A referendum','Devolution'], correct:0 },
+    { cat:'judicial', q:'Roughly how many judges sit on Kenya’s Supreme Court, including the Chief Justice and Deputy Chief Justice?', opts:['5','7','9','11'], correct:1 },
+    { cat:'judicial', q:'Which office is independent of the Judiciary but prosecutes criminal cases on behalf of the State?', opts:['The Attorney-General','The Director of Public Prosecutions','The Chief Justice','The Inspector-General of Police'], correct:1 },
+
+    /* Bill of Rights */
+    { cat:'rights', q:'Which chapter of the Constitution is the Bill of Rights?', opts:['Chapter Two','Chapter Four','Chapter Ten','Chapter Fifteen'], correct:1 },
+    { cat:'rights', q:'The Bill of Rights spans which range of Articles?', opts:['Articles 1 to 18','Articles 19 to 59','Articles 60 to 100','Articles 200 to 230'], correct:1 },
+    { cat:'rights', q:'Article 27 protects the right to...?', opts:['A fair trial only','Equality and freedom from discrimination','Property only','Movement only'], correct:1 },
+    { cat:'rights', q:'Which article is widely known for guaranteeing economic and social rights like health care, housing, food, water, and education?', opts:['Article 27','Article 35','Article 43','Article 50'], correct:2 },
+    { cat:'rights', q:'Article 33 protects which freedom?', opts:['Freedom of expression','Freedom of movement','Right to property','Right to a fair hearing'], correct:0 },
+    { cat:'rights', q:'Article 31 protects your right to...?', opts:['Vote','Privacy','A jury trial','Bear arms'], correct:1 },
+    { cat:'rights', q:'Article 40 protects which right?', opts:['Freedom of religion','The right to property','Freedom of the press','The right to vote'], correct:1 },
+    { cat:'rights', q:'Article 50 guarantees what, if you are accused of a crime?', opts:['Automatic release','A fair hearing, including a public trial','A government-paid vacation','Immunity from prosecution'], correct:1 },
+    { cat:'rights', q:'What does the Constitution say about who the Bill of Rights binds?', opts:['Only Parliament','Only the President','All State organs and, in some cases, private individuals','No one — it is symbolic only'], correct:2 },
+    { cat:'rights', q:'Article 37 protects the right to...?', opts:['Peaceful assembly, demonstration, and petition','Free healthcare','A minimum wage','Free primary education only'], correct:0 },
+    { cat:'rights', q:'Which article protects freedom of the media specifically?', opts:['Article 33','Article 34','Article 35','Article 36'], correct:1 },
+    { cat:'rights', q:'Article 43 lists rights that include access to which of the following?', opts:['Clean and adequate water','A company car','Free international travel','A guaranteed government job'], correct:0 },
+    { cat:'rights', q:'What does Article 48 say the State must ensure regarding justice?', opts:['Access to justice for all persons','Free legal advice only for the wealthy','Justice only in Nairobi','Justice delayed is acceptable'], correct:0 },
+    { cat:'rights', q:'Which of these rights is described in the Constitution as non-derogable, meaning it can never be limited, even in a state of emergency?', opts:['Freedom from torture and cruel treatment','The right to own a car','The right to a government job','Freedom to travel abroad'], correct:0 },
+    { cat:'rights', q:'Article 53 focuses on the rights of which group?', opts:['Children','Older members of society','Members of Parliament','Judges'], correct:0 },
+    { cat:'rights', q:'Article 56 requires the State to take affirmative action for which group?', opts:['Foreign investors','Minorities and marginalised groups','Members of Parliament','Political parties'], correct:1 },
+
+    /* Devolution & Counties */
+    { cat:'devolution', q:'How many counties did the 2010 Constitution create?', opts:['8','24','47','54'], correct:2 },
+    { cat:'devolution', q:'Who heads the executive of a county government?', opts:['The Senator','The Governor','The Speaker','The Deputy President'], correct:1 },
+    { cat:'devolution', q:'What is the legislative body of a county called?', opts:['The County Assembly','The County Senate','The Local Parliament','The Ward Council'], correct:0 },
+    { cat:'devolution', q:'Members of a County Assembly are commonly known by what abbreviation?', opts:['MPs','MCAs','MCCs','CECs'], correct:1 },
+    { cat:'devolution', q:'What is the minimum share of national revenue the Constitution guarantees to county governments as a whole, calculated on audited national revenue?', opts:['At least 5%','At least 15%','At least 30%','At least 50%'], correct:1 },
+    { cat:'devolution', q:'Which body recommends how revenue should be shared between national and county governments?', opts:['The Commission on Revenue Allocation','The Judicial Service Commission','The Senate alone','The IEBC'], correct:0 },
+    { cat:'devolution', q:'Which of these is a typically devolved (county-level) function?', opts:['National defence','County health services','Printing currency','Foreign affairs'], correct:1 },
+    { cat:'devolution', q:'What is one of the Senate’s special roles regarding counties?', opts:['Appointing all governors','Protecting the interests of counties and their governments','Running county elections','Collecting county taxes directly'], correct:1 },
+    { cat:'devolution', q:'Devolution is described as one of the major reforms of the 2010 Constitution because it moves power...?', opts:['To international bodies','Closer to the people, at the county level','Entirely to the President','To the military'], correct:1 },
+    { cat:'devolution', q:'Which schedule of the Constitution distributes functions between national and county governments?', opts:['The First Schedule','The Second Schedule','The Fourth Schedule','The Sixth Schedule'], correct:2 },
+    { cat:'devolution', q:'Can a county government be suspended?', opts:['Never, under any circumstances','Yes, but only through a constitutionally defined process, such as during a crisis','Yes, at the sole discretion of a Governor','Yes, whenever the Senate feels like it'], correct:1 },
+    { cat:'devolution', q:'A County Assembly is led by which presiding officer?', opts:['A Governor','A Speaker','A Senator','The Deputy President'], correct:1 },
+
+    /* History & Founding */
+    { cat:'history', q:'On what date was the current Constitution of Kenya promulgated?', opts:['1 June 2010','27 August 2010','12 December 2010','4 August 2010'], correct:1 },
+    { cat:'history', q:'On what date did Kenyans vote in the referendum that approved the 2010 Constitution?', opts:['27 August 2010','4 August 2010','1 June 2010','20 October 2010'], correct:1 },
+    { cat:'history', q:'Who was President of Kenya when the 2010 Constitution was promulgated?', opts:['Jomo Kenyatta','Daniel arap Moi','Mwai Kibaki','Uhuru Kenyatta'], correct:2 },
+    { cat:'history', q:'What date does Kenya celebrate as Independence Day, marking independence from Britain in 1963?', opts:['1 June','12 December','20 October','16 December'], correct:1 },
+    { cat:'history', q:'What is 1 June, when Kenya achieved internal self-rule in 1963, celebrated as?', opts:['Jamhuri Day','Mashujaa Day','Madaraka Day','Moi Day'], correct:2 },
+    { cat:'history', q:'What is 20 October, honouring Kenya’s freedom fighters, celebrated as?', opts:['Mashujaa Day','Jamhuri Day','Madaraka Day','Kenyatta Day (before it was renamed)'], correct:0 },
+    { cat:'history', q:'Who was Kenya’s first President after independence?', opts:['Daniel arap Moi','Jomo Kenyatta','Mwai Kibaki','Raila Odinga'], correct:1 },
+    { cat:'history', q:'Which constitution governed Kenya immediately before the 2010 Constitution replaced it?', opts:['The 1963 Independence Constitution as amended over the years','A brand-new document with no prior history','A constitution written entirely in 2005','The Lancaster House Agreement'], correct:0 },
+    { cat:'history', q:'What was a major goal of the 2010 constitutional reform process?', opts:['Reducing devolved power','Curbing the concentration of power in the Presidency and introducing devolution','Removing the Judiciary entirely','Abolishing Parliament'], correct:1 },
+    { cat:'history', q:'The 2005 referendum on an earlier draft constitution (which was rejected) is remembered for popularising which political movement’s name, inspired by the "No" campaign symbol?', opts:['The Orange Democratic Movement','The Banana Movement','The Green Party','The Rainbow Coalition'], correct:0 },
+    { cat:'history', q:'What body of experts helped draft the document that became the 2010 Constitution?', opts:['The Committee of Experts','The Electoral Commission','The Cabinet','The Senate'], correct:0 },
+    { cat:'history', q:'Roughly what share of voters approved the Constitution in the August 2010 referendum?', opts:['About 30%','About 50%','About two-thirds','Nearly 100%'], correct:2 },
+    { cat:'history', q:'What do Kenyans commonly call their Constitution, in Kiswahili?', opts:['Sheria','Katiba','Bunge','Baraza'], correct:1 },
+    { cat:'history', q:'What is 12 December, marking Kenya becoming a republic in 1964, celebrated as?', opts:['Madaraka Day','Mashujaa Day','Jamhuri Day','Heroes’ Day'], correct:2 },
+    { cat:'history', q:'The 2010 Constitution is sometimes described by commentators as Kenya’s...?', opts:['First ever legal document','"Second liberation" moment','Final constitution, never to be amended','A temporary, five-year document'], correct:1 },
+    { cat:'history', q:'How can the Constitution itself be changed?', opts:['It cannot be amended at all','Through defined amendment procedures in Parliament, and for some provisions, a referendum','A single presidential decree','A Supreme Court ruling alone'], correct:1 }
+  ];
+
+  var selectedCats = {};
+  CATS.forEach(function(c){ selectedCats[c.key] = true; });
+  var selectedMinutes = 15;
+  var quizState = 'setup';
+  var timeLeft = 0, totalTime = 0, timerHandle = null;
+  var queue = [], queueIndex = 0;
+  var answeredCount = 0, correctCount = 0, answered = false, currentQ = null;
+  var quizCard = document.getElementById('quizCard');
+
+  function catByKey(k){ return CATS.filter(function(c){ return c.key === k; })[0]; }
+
+  function shuffled(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t=a[i]; a[i]=a[j]; a[j]=t;
+    }
+    return a;
+  }
+
+  function buildQueue(){
+    var pool = QUIZ_BANK.filter(function(item){ return selectedCats[item.cat]; });
+    if(pool.length === 0) pool = QUIZ_BANK.slice();
+    return shuffled(pool);
+  }
+
+  function formatTime(sec){
+    sec = Math.max(0, sec);
+    var m = Math.floor(sec/60), s = sec%60;
+    return m + ':' + (s<10?'0':'') + s;
+  }
+
+  function renderSetup(){
+    quizState = 'setup';
+    clearInterval(timerHandle);
+    quizCard.innerHTML =
+      '<div class="quiz-setup">'+
+        '<div>'+
+          '<div class="setup-label">Pick your topics</div>'+
+          '<div class="chip-grid" id="catChips">'+
+            CATS.map(function(c){
+              var count = QUIZ_BANK.filter(function(q){ return q.cat===c.key; }).length;
+              return '<button class="cat-chip" data-cat="'+c.key+'" aria-pressed="'+selectedCats[c.key]+'">'+
+                       '<span class="swatch" style="background:'+c.color+'"></span>'+c.label+' ('+count+')'+
+                     '</button>';
+            }).join('') +
+          '</div>'+
+        '</div>'+
+        '<div>'+
+          '<div class="setup-label">How much time do you have?</div>'+
+          '<div class="chip-grid" id="timeChips">'+
+            TIME_OPTIONS.map(function(m){
+              return '<button class="time-chip" data-min="'+m+'" aria-pressed="'+(m===selectedMinutes)+'">'+m+' min</button>';
+            }).join('') +
+          '</div>'+
+          '<p class="setup-hint">Answer as many questions as you can before time runs out — the deck reshuffles and keeps going if you\'re on a roll.</p>'+
+        '</div>'+
+        '<button class="start-btn" id="startQuiz">🎬 Start the Quiz</button>'+
+      '</div>';
+
+    quizCard.querySelectorAll('.cat-chip').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var key = btn.getAttribute('data-cat');
+        var activeCount = Object.keys(selectedCats).filter(function(k){ return selectedCats[k]; }).length;
+        if(selectedCats[key] && activeCount === 1) return;
+        selectedCats[key] = !selectedCats[key];
+        btn.setAttribute('aria-pressed', String(selectedCats[key]));
+      });
+    });
+    quizCard.querySelectorAll('.time-chip').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        selectedMinutes = +btn.getAttribute('data-min');
+        quizCard.querySelectorAll('.time-chip').forEach(function(b){
+          b.setAttribute('aria-pressed', String(+b.getAttribute('data-min')===selectedMinutes));
+        });
+      });
+    });
+    document.getElementById('startQuiz').addEventListener('click', startQuiz);
+  }
+
+  function startQuiz(){
+    totalTime = selectedMinutes*60;
+    timeLeft = totalTime;
+    answeredCount = 0; correctCount = 0;
+    queue = buildQueue(); queueIndex = 0;
+    quizState = 'playing';
+    clearInterval(timerHandle);
+    timerHandle = setInterval(tick, 1000);
+    showNextQuestion();
+  }
+
+  function tick(){
+    timeLeft--;
+    updateHud();
+    if(timeLeft <= 0) endQuiz();
+  }
+
+  function updateHud(){
+    var timerEl = document.getElementById('timerDisplay');
+    var fillEl = document.getElementById('timerFill');
+    var scoreEl = document.getElementById('hudScore');
+    if(!timerEl || !fillEl || !scoreEl) return;
+    var low = timeLeft <= 30;
+    timerEl.textContent = formatTime(timeLeft);
+    timerEl.classList.toggle('low', low);
+    fillEl.style.width = Math.max(0, (timeLeft/totalTime)*100) + '%';
+    fillEl.classList.toggle('low', low);
+    scoreEl.textContent = 'Correct ' + correctCount + ' · Answered ' + answeredCount;
+  }
+
+  function showNextQuestion(){
+    if(queueIndex >= queue.length){ queue = buildQueue(); queueIndex = 0; }
+    currentQ = queue[queueIndex]; queueIndex++;
+    answered = false;
+    renderPlaying();
+  }
+
+  function renderPlaying(){
+    var cat = catByKey(currentQ.cat);
+    quizCard.innerHTML =
+      '<div class="quiz-hud">'+
+        '<div>'+
+          '<div class="timer-display" id="timerDisplay">'+formatTime(timeLeft)+'</div>'+
+          '<div class="hud-score" id="hudScore">Correct '+correctCount+' · Answered '+answeredCount+'</div>'+
+        '</div>'+
+        '<button class="finish-btn" id="finishNow">⏹ Finish now</button>'+
+      '</div>'+
+      '<div class="timer-track"><div class="timer-fill" id="timerFill" style="width:'+Math.max(0,(timeLeft/totalTime)*100)+'%"></div></div>'+
+      '<div class="quiz-cat-badge" style="background:'+cat.color+'">'+cat.label+'</div>'+
+      '<div class="quiz-q">'+currentQ.q+'</div>'+
+      '<div class="quiz-opts">'+ currentQ.opts.map(function(o,i){
+        return '<button class="quiz-opt" data-i="'+i+'">'+o+'</button>';
+      }).join('') +
+      '</div>'+
+      '<div class="quiz-feedback" id="quizFeedback" aria-live="polite"></div>';
+
+    document.getElementById('finishNow').addEventListener('click', endQuiz);
+    quizCard.querySelectorAll('.quiz-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(answered || quizState !== 'playing') return;
+        answered = true;
+        answeredCount++;
+        var i = +btn.getAttribute('data-i');
+        var fb = document.getElementById('quizFeedback');
+        if(i === currentQ.correct){
+          btn.classList.add('correct');
+          correctCount++;
+          fb.textContent = '🎉 Sawa kabisa! Nicely played.';
+          tone(659.25,0.25,{type:'triangle',peak:0.16});
+          setTimeout(function(){ tone(880,0.3,{type:'triangle',peak:0.16}); },150);
+        } else {
+          btn.classList.add('wrong');
+          quizCard.querySelectorAll('.quiz-opt')[currentQ.correct].classList.add('correct');
+          fb.textContent = '💡 Close! The right answer is highlighted — onward!';
+          tone(220,0.3,{type:'sine',peak:0.14});
+        }
+        updateHud();
+        setTimeout(function(){ if(quizState==='playing') showNextQuestion(); }, 1300);
+      });
+    });
+  }
+
+  function endQuiz(){
+    clearInterval(timerHandle);
+    if(quizState === 'done') return;
+    quizState = 'done';
+    renderDone();
+  }
+
+  function renderDone(){
+    var pct = answeredCount ? Math.round((correctCount/answeredCount)*100) : 0;
+    var label = answeredCount===0 ? 'Warming Up' : pct===100 ? 'Katiba Champion' : pct>=70 ? 'Rafiki wa Katiba' : 'Rising Wananchi Scholar';
+    var starCount = Math.min(10, Math.round(pct/10));
+    quizCard.innerHTML =
+      '<div class="quiz-done">'+
+        '<div class="quiz-q">Time\'s up! You answered '+answeredCount+' question'+(answeredCount===1?'':'s')+' and got '+correctCount+' right ('+pct+'%).</div>'+
+        '<div class="stars-row" aria-hidden="true">'+ '⭐'.repeat(starCount) + '☆'.repeat(10-starCount) +'</div>'+
+        '<p style="font-family:\'Baloo 2\'; font-weight:700; font-size:1.2rem; color:var(--green-dark);">Badge earned: '+label+'</p>'+
+        '<div class="branch-buttons">'+
+          '<button class="final-btn" id="replayQuiz">🔁 Play again</button>'+
+          '<button class="pill-btn" id="changeSettings">⚙️ Change topics &amp; time</button>'+
+        '</div>'+
+      '</div>';
+    document.getElementById('replayQuiz').addEventListener('click', startQuiz);
+    document.getElementById('changeSettings').addEventListener('click', renderSetup);
+  }
+
+  renderSetup();
+
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,20 @@
+node_modules/
+
+# NEVER commit signing secrets
+keystore/
+
+# Build outputs
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/captures/
+ios/App/Pods/
+ios/App/build/
+ios/App/DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# OS
+.DS_Store
+Thumbs.db
