@@ -42,6 +42,8 @@ workflows:
     integrations:
       app_store_connect: codemagic_asc   # must match the integration name you create in Codemagic > Team settings > Integrations > App Store Connect
     environment:
+      groups:
+        - ios_signing         # CERTIFICATE_PRIVATE_KEY
       vars:
         BUNDLE_ID: "com.rkigano.katibajam"
         XCODE_PROJECT: "ios/App/App.xcodeproj"
