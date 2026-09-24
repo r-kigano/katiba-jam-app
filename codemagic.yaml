@@ -60,6 +60,11 @@ workflows:
         script: npx cap sync ios
       - name: Set up code signing settings on Xcode project
         script: xcode-project use-profiles
+      - name: Increment build number
+        script: |
+          cd ios/App
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-build-number "$BUNDLE_ID" || echo 0)
+          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
       - name: Build .ipa
         script: |
           xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
