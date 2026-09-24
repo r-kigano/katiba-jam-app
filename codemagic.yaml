@@ -49,6 +49,7 @@ workflows:
         bundle_identifier: com.rkigano.katibajam
       vars:
         BUNDLE_ID: "com.rkigano.katibajam"
+        APP_STORE_APP_ID: "6815418995"
         XCODE_PROJECT: "ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
       node: 22
@@ -63,7 +64,7 @@ workflows:
       - name: Increment build number
         script: |
           cd ios/App
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-build-number "$BUNDLE_ID" || echo 0)
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-build-number "$APP_STORE_APP_ID" || echo 0)
           agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
       - name: Build .ipa
         script: |
