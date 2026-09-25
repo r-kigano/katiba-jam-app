@@ -7,7 +7,7 @@
     "androidScheme": "https"
   },
   "ios": {
-    "contentInset": "always",
+    "contentInset": "never",
     "backgroundColor": "#FBF6EA"
   },
   "android": {
