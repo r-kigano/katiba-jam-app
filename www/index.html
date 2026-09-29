@@ -129,7 +129,11 @@
   }
 
   /* ---------- nav tabs ---------- */
-  .navtabs{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; padding:6px 0 2px; }
+  .navtabs{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+    background: var(--cream-2); border-bottom: 3px solid var(--ink);
+    padding: 10px max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
+  }
   .navtab{
     border:2px solid var(--ink); background:#fff; color:var(--ink);
     border-radius:999px; padding:7px 15px; font-weight:700; font-size:0.82rem;
@@ -411,13 +415,14 @@
       <button class="chip-btn" id="soundBtn" aria-pressed="true">🔊 Sound on</button>
     </div>
   </div>
-  <div class="navtabs">
-    <a class="navtab" href="#preamble">Preamble</a>
-    <a class="navtab" href="#branches">Government</a>
-    <a class="navtab" href="#rights">Bill of Rights</a>
-    <a class="navtab" href="#katiba">Read the Katiba</a>
-    <a class="navtab" href="#quiz">Quiz</a>
-  </div>
+</div>
+
+<div class="navtabs">
+  <a class="navtab" href="#preamble">Preamble</a>
+  <a class="navtab" href="#branches">Government</a>
+  <a class="navtab" href="#rights">Bill of Rights</a>
+  <a class="navtab" href="#katiba">Read the Katiba</a>
+  <a class="navtab" href="#quiz">Quiz</a>
 </div>
 
 <div class="wrap">
