@@ -14,7 +14,7 @@ workflows:
       java: 21
     scripts:
       - name: Install npm dependencies
-        script: npm ci
+        script: npm ci --omit=dev
       - name: Sync Capacitor Android project
         script: npx cap sync android
       - name: Decode Android keystore
@@ -56,7 +56,7 @@ workflows:
       xcode: latest
     scripts:
       - name: Install npm dependencies
-        script: npm ci
+        script: npm ci --omit=dev
       - name: Sync Capacitor iOS project
         script: npx cap sync ios
       - name: Set up code signing settings on Xcode project
