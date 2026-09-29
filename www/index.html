@@ -104,6 +104,11 @@
     background: var(--cream-2);
     border-bottom: 3px solid var(--ink);
     padding: calc(10px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
+    /* Force its own GPU compositing layer — without this, WKWebView can let
+       page content bleed through a sticky element during scroll. */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
   }
   .booth-inner{
     max-width:900px; margin:0 auto;
@@ -365,7 +370,7 @@
 
   /* ---------- background flag watermark ---------- */
   .flag-bg{
-    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    position:absolute; inset:0; z-index:-1; pointer-events:none;
     opacity:0.14;
     background: repeating-linear-gradient(
       to bottom,
