@@ -639,17 +639,23 @@
   /* ---------------- read-aloud (native TTS in the app, browser TTS on the web) ---------------- */
   // Android's WebView has no reliable window.speechSynthesis, so inside the
   // native shell we use the Capacitor TextToSpeech plugin instead.
+  // This page has no bundler, so @capacitor/core's registerPlugin() isn't available.
+  // The native bridge Capacitor injects does expose nativePromise(), which calls a
+  // registered native plugin by name.
+  var onNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   var nativeTTS = null;
-  try{
-    if(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()){
-      nativeTTS = window.Capacitor.registerPlugin('TextToSpeech');
-    }
-  }catch(e){ nativeTTS = null; }
+  if(onNative && typeof window.Capacitor.nativePromise === 'function'){
+    nativeTTS = {
+      stop: function(){ return window.Capacitor.nativePromise('TextToSpeech', 'stop', {}); },
+      speak: function(o){ return window.Capacitor.nativePromise('TextToSpeech', 'speak', o); },
+      getSupportedLanguages: function(){ return window.Capacitor.nativePromise('TextToSpeech', 'getSupportedLanguages', {}); }
+    };
+  }
 
   function stopSpeaking(){
     try{
       if(nativeTTS){ nativeTTS.stop().catch(function(){}); }
-      else if(window.speechSynthesis){ speechSynthesis.cancel(); }
+      else if(!onNative && window.speechSynthesis){ speechSynthesis.cancel(); }
     }catch(e){}
   }
 
@@ -672,6 +678,10 @@
           var msg = (err && (err.message || err.errorMessage)) || String(err);
           alert('Read Aloud could not start: ' + msg + '\n\nCheck Settings → Text-to-speech output on this device.');
         });
+        return;
+      }
+      if(onNative){
+        alert('Read Aloud is not available: the speech plugin could not be reached in this app.');
         return;
       }
       if(window.speechSynthesis){
