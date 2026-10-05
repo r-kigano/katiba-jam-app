@@ -600,7 +600,7 @@
     soundOn = !soundOn;
     try{ localStorage.setItem('kj_sound', soundOn ? '1':'0'); }catch(e){}
     applySound();
-    if(!soundOn && window.speechSynthesis) speechSynthesis.cancel();
+    if(!soundOn) stopSpeaking();
   });
 
   /* ---------------- home-screen icon & install manifest ---------------- */
@@ -635,6 +635,41 @@
       document.head.appendChild(linkManifest);
     }catch(e){}
   })();
+
+  /* ---------------- read-aloud (native TTS in the app, browser TTS on the web) ---------------- */
+  // Android's WebView has no reliable window.speechSynthesis, so inside the
+  // native shell we use the Capacitor TextToSpeech plugin instead.
+  var nativeTTS = null;
+  try{
+    if(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()){
+      nativeTTS = window.Capacitor.registerPlugin('TextToSpeech');
+    }
+  }catch(e){ nativeTTS = null; }
+
+  function stopSpeaking(){
+    try{
+      if(nativeTTS){ nativeTTS.stop().catch(function(){}); }
+      else if(window.speechSynthesis){ speechSynthesis.cancel(); }
+    }catch(e){}
+  }
+
+  function speakText(text, rate){
+    text = String(text).slice(0, 3900); // Android caps a single utterance at ~4000 chars
+    try{
+      if(nativeTTS){
+        nativeTTS.stop().catch(function(){}).then(function(){
+          return nativeTTS.speak({ text:text, lang:'en-US', rate:rate, pitch:1.0, volume:1.0, category:'playback' });
+        }).catch(function(){});
+        return;
+      }
+      if(window.speechSynthesis){
+        speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(text);
+        u.rate = rate;
+        speechSynthesis.speak(u);
+      }
+    }catch(e){}
+  }
 
   /* ---------------- tiny audio engine ---------------- */
   var AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -762,11 +797,7 @@
   });
 
   document.getElementById('readPreamble').addEventListener('click', function(){
-    if(!window.speechSynthesis) return;
-    speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(preamblePhrases().join(' '));
-    u.rate = 0.92;
-    speechSynthesis.speak(u);
+    speakText(preamblePhrases().join(' '), 0.92);
   });
 
   /* ---------------- Branches / Pillars ---------------- */
@@ -964,11 +995,7 @@
       '</div>';
     document.querySelectorAll('.dot').forEach(function(d,i){ d.classList.toggle('active', i===amendIndex); });
     document.getElementById('readAmend').addEventListener('click', function(){
-      if(!window.speechSynthesis) return;
-      speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance('Article '+a.num+'. '+a.title+'. '+articleFullText(a.num));
-      u.rate = 0.94;
-      speechSynthesis.speak(u);
+      speakText('Article '+a.num+'. '+a.title+'. '+articleFullText(a.num), 0.94);
     });
   }
   renderAmend();
