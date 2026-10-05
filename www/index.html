@@ -658,8 +658,20 @@
     try{
       if(nativeTTS){
         nativeTTS.stop().catch(function(){}).then(function(){
-          return nativeTTS.speak({ text:text, lang:'en-US', rate:rate, pitch:1.0, volume:1.0, category:'playback' });
-        }).catch(function(){});
+          // The plugin silently does nothing if no engine/voice is ready, so
+          // check first and pick an English voice the device actually has.
+          return nativeTTS.getSupportedLanguages();
+        }).then(function(res){
+          var langs = (res && res.languages) || [];
+          if(!langs.length) throw new Error('No text-to-speech voices are installed or enabled');
+          var pick = ['en-US','en-GB','en-AU','en-IN'].filter(function(l){ return langs.indexOf(l) !== -1; })[0]
+            || langs.filter(function(l){ return /^en/i.test(l); })[0]
+            || langs[0];
+          return nativeTTS.speak({ text:text, lang:pick, rate:rate, pitch:1.0, volume:1.0, category:'playback' });
+        }).catch(function(err){
+          var msg = (err && (err.message || err.errorMessage)) || String(err);
+          alert('Read Aloud could not start: ' + msg + '\n\nCheck Settings → Text-to-speech output on this device.');
+        });
         return;
       }
       if(window.speechSynthesis){
