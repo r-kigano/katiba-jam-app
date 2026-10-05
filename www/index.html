@@ -548,7 +548,8 @@
     <span class="flag-dot" style="background:var(--green)"></span>
     <br><br>
     Made for every Kenyan, from first graders to grandparents. Turn the sound up, or down, and enjoy the show.<br>
-    Katiba Jam is an independent educational app and is not affiliated with, endorsed by, or sponsored by the Government of Kenya.
+    Katiba Jam is an independent educational app and is not affiliated with, endorsed by, or sponsored by the Government of Kenya.<br>
+    <small id="buildId" style="opacity:.6"></small>
   </footer>
 </div>
 
@@ -556,6 +557,14 @@
 <script>
 (function(){
   "use strict";
+
+  // Replaced with Codemagic's BUILD_NUMBER at build time (see codemagic.yaml);
+  // shown in the footer so you can tell which build is installed.
+  var BUILD_ID = '__BUILD__';
+  (function(){
+    var el = document.getElementById('buildId');
+    if(el) el.textContent = 'Build ' + BUILD_ID;
+  })();
 
   /* ---------------- accessibility controls ---------------- */
   var root = document.documentElement;
@@ -673,7 +682,12 @@
           var pick = ['en-US','en-GB','en-AU','en-IN'].filter(function(l){ return langs.indexOf(l) !== -1; })[0]
             || langs.filter(function(l){ return /^en/i.test(l); })[0]
             || langs[0];
-          return nativeTTS.speak({ text:text, lang:pick, rate:rate, pitch:1.0, volume:1.0, category:'playback' });
+          // TEMPORARY diagnostics: shows the build, voices found, and how long speech lasted.
+          alert('[Katiba build ' + BUILD_ID + '] Voices found: ' + langs.length + ' (' + langs.slice(0,6).join(', ') + ')\nUsing: ' + pick + '\nText length: ' + text.length + '\n\nTap OK, then listen.');
+          var t0 = Date.now();
+          return nativeTTS.speak({ text:text, lang:pick, rate:rate, pitch:1.0, volume:1.0, category:'playback' }).then(function(){
+            alert('[Katiba build ' + BUILD_ID + '] Speech call finished after ' + (Date.now() - t0) + ' ms.\n(A ' + text.length + '-character text should take many seconds. A very short time means the engine produced no audio.)');
+          });
         }).catch(function(err){
           var msg = (err && (err.message || err.errorMessage)) || String(err);
           alert('Read Aloud could not start: ' + msg + '\n\nCheck Settings → Text-to-speech output on this device.');
