@@ -134,8 +134,10 @@
   }
 
   /* ---------- nav tabs ---------- */
-  /* The only pinned content: sticks just below the status-bar cover. */
+  /* The only pinned content: sticks just below the status-bar cover. Fixed 16px base (em
+     units inside) so it doesn't swallow the screen when the reader turns the text size up. */
   .navtabs{
+    font-size:16px;
     position: sticky; top: env(safe-area-inset-top); z-index:50;
     display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
     background: var(--cream-2); border-bottom: 3px solid var(--ink);
@@ -147,7 +149,7 @@
   }
   .navtab{
     border:2px solid var(--ink); background:#fff; color:var(--ink);
-    border-radius:999px; padding:6px 14px; font-weight:700; font-size:0.8rem;
+    border-radius:999px; padding:6px 14px; font-weight:700; font-size:0.8em;
     text-decoration:none;
   }
   /* Keep jumped-to section headings clear of the pinned bar. */
@@ -407,8 +409,10 @@
   html.contrast .flag-bg{ opacity:0.04; }
 
   @media (max-width: 560px){
-    .card-stage{ gap:8px; }
-    .arrow-btn{ width:44px; height:44px; font-size:1.1rem; }
+    /* Phones: card gets the full width; arrows sit side by side underneath it. */
+    .card-stage{ flex-wrap:wrap; gap:14px 28px; }
+    .amend-card{ order:-1; flex:1 1 100%; }
+    .arrow-btn{ width:56px; height:56px; }
     .counties-grid{ grid-template-columns: repeat(auto-fill, minmax(11px,1fr)); }
   }
 </style>
@@ -669,6 +673,7 @@
   }
 
   function speakText(text, rate){
+    if(!soundOn) return;
     text = String(text).slice(0, 3900); // Android caps a single utterance at ~4000 chars
     try{
       if(nativeTTS){
@@ -682,12 +687,7 @@
           var pick = ['en-US','en-GB','en-AU','en-IN'].filter(function(l){ return langs.indexOf(l) !== -1; })[0]
             || langs.filter(function(l){ return /^en/i.test(l); })[0]
             || langs[0];
-          // TEMPORARY diagnostics: shows the build, voices found, and how long speech lasted.
-          alert('[Katiba build ' + BUILD_ID + '] Voices found: ' + langs.length + ' (' + langs.slice(0,6).join(', ') + ')\nUsing: ' + pick + '\nText length: ' + text.length + '\n\nTap OK, then listen.');
-          var t0 = Date.now();
-          return nativeTTS.speak({ text:text, lang:pick, rate:rate, pitch:1.0, volume:1.0, category:'playback' }).then(function(){
-            alert('[Katiba build ' + BUILD_ID + '] Speech call finished after ' + (Date.now() - t0) + ' ms.\n(A ' + text.length + '-character text should take many seconds. A very short time means the engine produced no audio.)');
-          });
+          return nativeTTS.speak({ text:text, lang:pick, rate:rate, pitch:1.0, volume:1.0, category:'playback' });
         }).catch(function(err){
           var msg = (err && (err.message || err.errorMessage)) || String(err);
           alert('Read Aloud could not start: ' + msg + '\n\nCheck Settings → Text-to-speech output on this device.');

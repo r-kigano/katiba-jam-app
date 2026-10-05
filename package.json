@@ -4,7 +4,8 @@
   "description": "A colorful, accessible civics app about the Constitution of Kenya and its government",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test",
+    "test:report": "playwright show-report"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
+    "@playwright/test": "^1.63.0",
     "sharp": "^0.35.4"
   }
 }
