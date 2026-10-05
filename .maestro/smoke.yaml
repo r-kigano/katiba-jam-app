@@ -1,0 +1,86 @@
+# Smoke test of the installed Android app, including native Read Aloud (text-to-speech).
+# Run: maestro test .maestro/smoke.yaml   (with an emulator or USB device connected)
+# With the device volume up you should HEAR the Preamble being read.
+appId: com.rkigano.katibajam
+name: Katiba Jam - installed app smoke test
+---
+- launchApp:
+    clearState: true
+# On a slow emulator Android may show "isn't responding"; keep waiting rather than closing.
+- tapOn:
+    text: "Wait"
+    optional: true
+- extendedWaitUntil:
+    visible: ".*Control Booth.*"
+    timeout: 30000
+- assertVisible: "Read the Katiba"
+- takeScreenshot: kj-1-launch
+
+# Read Aloud through the native TextToSpeech plugin: no error dialog may appear
+- scrollUntilVisible:
+    element: ".*Read it aloud.*"
+    timeout: 60000
+    speed: 50
+    visibilityPercentage: 50
+    centerElement: true
+- tapOn: ".*Read it aloud.*"
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertNotVisible: "Read Aloud could not start.*"
+- assertNotVisible: "Read Aloud is not available.*"
+- takeScreenshot: kj-2-read-aloud
+
+# Counties bloom
+- scrollUntilVisible:
+    element: ".*Play its note.*"
+    timeout: 60000
+    speed: 50
+    visibilityPercentage: 50
+- scrollUntilVisible:
+    element: "47 counties.*"
+    timeout: 60000
+    speed: 50
+    visibilityPercentage: 50
+    centerElement: true
+- takeScreenshot: kj-3-government
+
+# Search the Katiba
+- tapOn: "Read the Katiba"
+- tapOn: "Search the Constitution.*"
+- inputText: "Article 43"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Article 43 . .*"
+    timeout: 60000
+    speed: 50
+    visibilityPercentage: 50
+- takeScreenshot: kj-4-search
+
+# Quiz: start and finish
+- tapOn: "Quiz"
+- scrollUntilVisible:
+    element: ".*Start the Quiz.*"
+    timeout: 60000
+    speed: 50
+    visibilityPercentage: 50
+    centerElement: true
+- tapOn: ".*Start the Quiz.*"
+# After Start the page does not scroll to the question (see report), so scroll back up to it.
+- scrollUntilVisible:
+    element: "Correct 0 . Answered 0"
+    direction: UP
+    timeout: 60000
+    speed: 50
+    visibilityPercentage: 50
+- scrollUntilVisible:
+    element: ".*Finish now.*"
+    direction: UP
+    timeout: 60000
+    visibilityPercentage: 50
+- tapOn: ".*Finish now.*"
+- scrollUntilVisible:
+    element: ".*Time's up!.*"
+    direction: UP
+    timeout: 60000
+    visibilityPercentage: 50
+- takeScreenshot: kj-5-quiz-done

@@ -1315,6 +1315,17 @@
     document.getElementById('startQuiz').addEventListener('click', startQuiz);
   }
 
+  // Starting or finishing swaps the quiz card for a shorter one, which can leave its top
+  // (question, timer, result) hidden behind the pinned section tabs. Bring it back into view.
+  function revealQuizCard(){
+    var bar = document.querySelector('.navtabs');
+    var barBottom = bar ? bar.getBoundingClientRect().bottom : 0;
+    var cardTop = quizCard.getBoundingClientRect().top;
+    if(cardTop < barBottom){
+      window.scrollTo(0, window.pageYOffset + cardTop - barBottom - 12);
+    }
+  }
+
   function startQuiz(){
     totalTime = selectedMinutes*60;
     timeLeft = totalTime;
@@ -1324,6 +1335,7 @@
     clearInterval(timerHandle);
     timerHandle = setInterval(tick, 1000);
     showNextQuestion();
+    revealQuizCard();
   }
 
   function tick(){
@@ -1402,6 +1414,7 @@
     if(quizState === 'done') return;
     quizState = 'done';
     renderDone();
+    revealQuizCard();
   }
 
   function renderDone(){

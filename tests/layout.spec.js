@@ -64,3 +64,15 @@ test('on phones the Bill of Rights card uses the full width, with both arrows un
   expect(next.y, '→ should sit below the card').toBeGreaterThanOrEqual(card.y + card.height);
   expect(prev.x + prev.width, '← should be left of →').toBeLessThan(next.x);
 });
+
+test('starting and finishing the quiz keep the question and result in view below the pinned bar', async ({ page }) => {
+  const barBottom = () => page.locator('.navtabs').evaluate((el) => el.getBoundingClientRect().bottom);
+  const topOf = (sel) => page.locator(sel).evaluate((el) => el.getBoundingClientRect().top);
+  await page.locator('#startQuiz').evaluate((el) => el.scrollIntoView({ block: 'end' }));
+  await page.locator('#startQuiz').click();
+  expect(await topOf('#timerDisplay'), 'timer hidden behind the pinned bar').toBeGreaterThanOrEqual(await barBottom());
+  await expect(page.locator('.quiz-q')).toBeInViewport();
+  await page.locator('#finishNow').click();
+  expect(await topOf('.quiz-done'), 'result hidden behind the pinned bar').toBeGreaterThanOrEqual(await barBottom());
+  await expect(page.locator('.quiz-done .quiz-q')).toBeInViewport();
+});

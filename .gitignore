@@ -22,3 +22,6 @@ Thumbs.db
 # Test outputs
 test-results/
 playwright-report/
+
+# Maestro test output (screenshots, logs)
+.maestro/output/
