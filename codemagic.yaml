@@ -15,6 +15,13 @@ workflows:
     scripts:
       - name: Install npm dependencies
         script: npm ci --omit=dev
+      - name: Run automated tests (build stops here if any fail)
+        script: |
+          # Playwright is installed outside the project so the npm ci above can keep skipping devDependencies.
+          PW_VERSION=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          npm install --prefix /tmp/pw --no-save --no-audit --no-fund "@playwright/test@$PW_VERSION"
+          /tmp/pw/node_modules/.bin/playwright install --with-deps chromium webkit
+          NODE_PATH=/tmp/pw/node_modules /tmp/pw/node_modules/.bin/playwright test
       - name: Stamp build number into the app
         script: |
           sed "s/__BUILD__/${BUILD_NUMBER}/" www/index.html > /tmp/index.stamped.html
@@ -31,6 +38,7 @@ workflows:
           chmod +x gradlew
           ./gradlew bundleRelease
     artifacts:
+      - playwright-report/**
       - android/app/build/outputs/**/*.aab
       - android/app/build/outputs/**/*.apk
     publishing:
@@ -61,6 +69,13 @@ workflows:
     scripts:
       - name: Install npm dependencies
         script: npm ci --omit=dev
+      - name: Run automated tests (build stops here if any fail)
+        script: |
+          # Playwright is installed outside the project so the npm ci above can keep skipping devDependencies.
+          PW_VERSION=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          npm install --prefix /tmp/pw --no-save --no-audit --no-fund "@playwright/test@$PW_VERSION"
+          /tmp/pw/node_modules/.bin/playwright install --with-deps chromium webkit
+          NODE_PATH=/tmp/pw/node_modules /tmp/pw/node_modules/.bin/playwright test
       - name: Stamp build number into the app
         script: |
           sed "s/__BUILD__/${BUILD_NUMBER}/" www/index.html > /tmp/index.stamped.html
@@ -78,6 +93,7 @@ workflows:
         script: |
           xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
     artifacts:
+      - playwright-report/**
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
     publishing:
