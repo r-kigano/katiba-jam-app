@@ -100,15 +100,9 @@
 
   /* ---------- control booth ---------- */
   .booth{
-    position: sticky; top:0; z-index:50;
     background: var(--cream-2);
     border-bottom: 3px solid var(--ink);
-    padding: calc(10px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
-    /* Force its own GPU compositing layer — without this, WKWebView can let
-       page content bleed through a sticky element during scroll. */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: transform;
+    padding: 10px max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
   }
   .booth-inner{
     max-width:900px; margin:0 auto;
@@ -129,16 +123,24 @@
   }
 
   /* ---------- nav tabs ---------- */
+  /* The only pinned element: first in the page so it sits under the status bar. */
   .navtabs{
+    position: sticky; top:0; z-index:50;
     display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
     background: var(--cream-2); border-bottom: 3px solid var(--ink);
-    padding: 10px max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
+    padding: calc(8px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-left)) 8px max(16px, env(safe-area-inset-right));
+    /* Own GPU compositing layer so WKWebView doesn't let content bleed through. */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
   }
   .navtab{
     border:2px solid var(--ink); background:#fff; color:var(--ink);
-    border-radius:999px; padding:7px 15px; font-weight:700; font-size:0.82rem;
+    border-radius:999px; padding:6px 14px; font-weight:700; font-size:0.8rem;
     text-decoration:none;
   }
+  /* Keep jumped-to section headings clear of the pinned bar. */
+  section{ scroll-margin-top: calc(110px + env(safe-area-inset-top)); }
 
   /* ---------- hero ---------- */
   .hero{ text-align:center; padding: 34px 0 6px; }
@@ -402,6 +404,14 @@
 
 <div class="flag-bg" aria-hidden="true"></div>
 
+<div class="navtabs">
+  <a class="navtab" href="#preamble">Preamble</a>
+  <a class="navtab" href="#branches">Government</a>
+  <a class="navtab" href="#rights">Bill of Rights</a>
+  <a class="navtab" href="#katiba">Read the Katiba</a>
+  <a class="navtab" href="#quiz">Quiz</a>
+</div>
+
 <div class="booth" role="region" aria-label="Accessibility controls">
   <div class="booth-inner">
     <div class="booth-title">🎛️ Control Booth</div>
@@ -415,14 +425,6 @@
       <button class="chip-btn" id="soundBtn" aria-pressed="true">🔊 Sound on</button>
     </div>
   </div>
-</div>
-
-<div class="navtabs">
-  <a class="navtab" href="#preamble">Preamble</a>
-  <a class="navtab" href="#branches">Government</a>
-  <a class="navtab" href="#rights">Bill of Rights</a>
-  <a class="navtab" href="#katiba">Read the Katiba</a>
-  <a class="navtab" href="#quiz">Quiz</a>
 </div>
 
 <div class="wrap">
