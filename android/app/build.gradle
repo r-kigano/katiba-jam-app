@@ -7,7 +7,9 @@ android {
         applicationId "com.rkigano.katibajam"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        // Google Play rejects a versionCode it has already seen. Codemagic's
+        // BUILD_NUMBER increases on every build; local builds fall back to 1.
+        versionCode Integer.parseInt(System.getenv('BUILD_NUMBER') ?: '1')
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
