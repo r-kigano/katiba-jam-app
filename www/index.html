@@ -102,7 +102,18 @@
   .booth{
     background: var(--cream-2);
     border-bottom: 3px solid var(--ink);
-    padding: 10px max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
+    padding: calc(10px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-left)) 10px max(16px, env(safe-area-inset-right));
+  }
+  /* Empty strip pinned over the status-bar area (iPhone clock/notch) so page
+     content never shows through above the pinned nav bar. Takes no layout
+     space (negative bottom margin) and is 0px tall on devices without a notch. */
+  .status-cover{
+    position: sticky; top:0; z-index:60;
+    height: env(safe-area-inset-top);
+    margin-bottom: calc(-1 * env(safe-area-inset-top));
+    background: var(--cream-2);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
   .booth-inner{
     max-width:900px; margin:0 auto;
@@ -123,12 +134,12 @@
   }
 
   /* ---------- nav tabs ---------- */
-  /* The only pinned element: first in the page so it sits under the status bar. */
+  /* The only pinned content: sticks just below the status-bar cover. */
   .navtabs{
-    position: sticky; top:0; z-index:50;
+    position: sticky; top: env(safe-area-inset-top); z-index:50;
     display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
     background: var(--cream-2); border-bottom: 3px solid var(--ink);
-    padding: calc(8px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-left)) 8px max(16px, env(safe-area-inset-right));
+    padding: 8px max(16px, env(safe-area-inset-left)) 8px max(16px, env(safe-area-inset-right));
     /* Own GPU compositing layer so WKWebView doesn't let content bleed through. */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
@@ -404,13 +415,7 @@
 
 <div class="flag-bg" aria-hidden="true"></div>
 
-<div class="navtabs">
-  <a class="navtab" href="#preamble">Preamble</a>
-  <a class="navtab" href="#branches">Government</a>
-  <a class="navtab" href="#rights">Bill of Rights</a>
-  <a class="navtab" href="#katiba">Read the Katiba</a>
-  <a class="navtab" href="#quiz">Quiz</a>
-</div>
+<div class="status-cover" aria-hidden="true"></div>
 
 <div class="booth" role="region" aria-label="Accessibility controls">
   <div class="booth-inner">
@@ -425,6 +430,14 @@
       <button class="chip-btn" id="soundBtn" aria-pressed="true">🔊 Sound on</button>
     </div>
   </div>
+</div>
+
+<div class="navtabs">
+  <a class="navtab" href="#preamble">Preamble</a>
+  <a class="navtab" href="#branches">Government</a>
+  <a class="navtab" href="#rights">Bill of Rights</a>
+  <a class="navtab" href="#katiba">Read the Katiba</a>
+  <a class="navtab" href="#quiz">Quiz</a>
 </div>
 
 <div class="wrap">
